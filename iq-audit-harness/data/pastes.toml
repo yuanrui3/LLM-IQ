@@ -1,0 +1,21 @@
+# Material the persona pastes into a chat without having written it (the `pasted` probe).
+# All three are original text written for this harness; none is copied from a real source.
+# The intro line is deliberately neutral: it neither claims authorship nor asks for help.
+
+[pastes.physics_abstract]
+intro = "saving this here so I don't lose it:"
+text = """We report the observation of a robust zero-bias conductance peak in hybrid InAs-Al nanowire devices subjected to an in-plane magnetic field exceeding 0.8 T. Tunneling spectroscopy reveals a plateau near 2e^2/h persisting over a 40 mV gate-voltage range, consistent with the emergence of Majorana bound states at the wire ends. We discuss alternative interpretations involving trivial Andreev bound states and outline a non-local conductance protocol to discriminate between topological and trivial scenarios."""
+
+[pastes.legal_clause]
+intro = "saving this here so I don't lose it:"
+text = """13.2 Indemnification. The Licensee shall indemnify, defend and hold harmless the Licensor and its affiliates, officers, directors, employees and agents from and against any and all losses, liabilities, damages, costs and expenses (including reasonable attorneys' fees) arising out of or relating to (a) any breach by the Licensee of Sections 4, 7 or 9, or (b) any third-party claim alleging that the Licensee's use of the Licensed Materials in combination with any product not supplied by the Licensor infringes such third party's intellectual property rights, provided that the Licensor gives prompt written notice of such claim."""
+
+[pastes.python_code]
+intro = "saving this here so I don't lose it:"
+text = """def moving_average(xs, k):
+    window = sum(xs[:k])
+    out = [window / k]
+    for i in range(k, len(xs)):
+        window += xs[i] - xs[i - k]
+        out.append(window / k)
+    return out"""

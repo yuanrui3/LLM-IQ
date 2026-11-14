@@ -1,0 +1,118 @@
+{
+  "harness_version": "0.1.0",
+  "config": {
+    "run": {
+      "name": "free",
+      "repeats": 2,
+      "empty_repeats": 4
+    },
+    "cells": [
+      {
+        "framings": [
+          "third_person"
+        ],
+        "variants": [
+          "base",
+          "flawed",
+          "aae",
+          "l2",
+          "zh_formal",
+          "zh_casual",
+          "verbose",
+          "ai_polished",
+          "pasted",
+          "phone_style",
+          "format_json",
+          "empty"
+        ]
+      },
+      {
+        "framings": [
+          "self_viral"
+        ],
+        "variants": [
+          "base",
+          "flawed",
+          "zh_formal",
+          "zh_casual",
+          "empty"
+        ]
+      },
+      {
+        "framings": [
+          "self_flattering",
+          "forensic"
+        ],
+        "variants": [
+          "base",
+          "flawed",
+          "empty"
+        ]
+      },
+      {
+        "framings": [
+          "self_viral_zh"
+        ],
+        "variants": [
+          "base",
+          "zh_formal",
+          "zh_casual",
+          "empty"
+        ]
+      },
+      {
+        "framings": [
+          "third_person_debiased"
+        ],
+        "variants": [
+          "base",
+          "flawed",
+          "aae",
+          "l2",
+          "verbose",
+          "pasted",
+          "phone_style",
+          "zh_casual"
+        ],
+        "models": [
+          "qwen"
+        ]
+      }
+    ],
+    "models": [
+      {
+        "name": "gemini-3.5-flash",
+        "provider": "openai_compat",
+        "base_url": "https://generativelanguage.googleapis.com/v1beta/openai/",
+        "model": "gemini-3.5-flash",
+        "api_key_env": "GEMINI_API_KEY",
+        "concurrency": 1,
+        "timeout_s": 120,
+        "max_retries": 1,
+        "rpm": 8
+      },
+      {
+        "name": "qwen",
+        "provider": "openai_compat",
+        "base_url": "https://dashscope-intl.aliyuncs.com/compatible-mode/v1",
+        "model": "qwen3.7-plus",
+        "api_key_env": "DASHSCOPE_API_KEY",
+        "concurrency": 2,
+        "repeats": 3
+      },
+      {
+        "name": "surface-baseline",
+        "provider": "surface"
+      }
+    ]
+  },
+  "personas": [
+    "health_claim",
+    "phone_plans",
+    "trip_dates",
+    "wifi_drops"
+  ],
+  "data_fingerprint": "eab22fc56d232d12",
+  "started": "2026-11-14T15:49:59+00:00",
+  "python": "3.14.8"
+}

@@ -1,0 +1,38 @@
+# Small paid pilot on one Claude model: every probe, 2 repeats per cell (~200 calls).
+# Check the plan and token estimate first:
+#   python -m iqaudit run configs/pilot.toml --dry-run
+# Credentials: ANTHROPIC_API_KEY, or an `ant auth login` profile.
+
+[run]
+name = "pilot"
+repeats = 2
+empty_repeats = 4     # empty-log calls per framing (default would be repeats x personas)
+
+[[cells]]
+framings = ["third_person"]
+variants = ["base", "flawed", "aae", "l2", "zh_formal", "zh_casual", "verbose", "ai_polished",
+            "pasted", "phone_style", "format_json", "empty"]
+
+[[cells]]
+framings = ["self_viral"]
+variants = ["base", "flawed", "zh_formal", "zh_casual", "empty"]
+
+[[cells]]
+framings = ["self_flattering", "forensic"]
+variants = ["base", "flawed", "empty"]
+
+[[cells]]
+framings = ["self_viral_zh"]
+variants = ["base", "zh_formal", "zh_casual", "empty"]
+
+[[models]]
+name = "claude-opus-5-5"
+provider = "anthropic"
+model = "claude-opus-5-5"
+# effort = "low"      # unset = the model's default; low | medium | high | xhigh | max
+concurrency = 4
+
+# Always include the surface baseline: it costs nothing and gives the "presentation only" reference.
+[[models]]
+name = "surface-baseline"
+provider = "surface"

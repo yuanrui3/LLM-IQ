@@ -1,0 +1,78 @@
+# Cross-model audit, 5 repeats per cell (~800 calls per model).
+# Turn a model on with `enabled = true` after setting its key variable and a current model id.
+# Models whose key variable is unset are skipped with a message; nothing else breaks.
+# Always dry-run first:  python -m iqaudit run configs/full.toml --dry-run
+
+[run]
+name = "full"
+repeats = 5
+
+[[cells]]
+framings = ["third_person"]
+variants = ["base", "flawed", "aae", "l2", "zh_formal", "zh_casual", "verbose", "ai_polished",
+            "pasted", "phone_style", "format_json", "empty"]
+
+[[cells]]
+framings = ["self_viral"]
+variants = ["base", "flawed", "zh_formal", "zh_casual", "empty"]
+
+[[cells]]
+framings = ["self_flattering", "forensic"]
+variants = ["base", "flawed", "empty"]
+
+[[cells]]
+framings = ["self_viral_zh"]
+variants = ["base", "zh_formal", "zh_casual", "empty"]
+
+# --- Anthropic (official SDK) ---------------------------------------------------------------
+[[models]]
+name = "claude-opus-5-5"
+provider = "anthropic"
+model = "claude-opus-5-5"
+concurrency = 4
+
+# --- Others, through the OpenAI-compatible chat-completions interface ------------------------
+# Model ids change often: check each vendor's current list before enabling.
+
+[[models]]
+name = "openai"
+enabled = false
+provider = "openai_compat"
+model = "REPLACE_ME"
+api_key_env = "OPENAI_API_KEY"
+
+[[models]]
+name = "deepseek"
+enabled = false
+provider = "openai_compat"
+base_url = "https://api.deepseek.com"
+model = "deepseek-chat"
+api_key_env = "DEEPSEEK_API_KEY"
+
+[[models]]
+name = "qwen"
+enabled = false
+provider = "openai_compat"
+base_url = "https://dashscope-intl.aliyuncs.com/compatible-mode/v1"   # Singapore; a China (Beijing) key needs https://dashscope.aliyuncs.com/compatible-mode/v1
+model = "qwen-plus"
+api_key_env = "DASHSCOPE_API_KEY"
+
+[[models]]
+name = "gemini"
+enabled = false
+provider = "openai_compat"
+base_url = "https://generativelanguage.googleapis.com/v1beta/openai/"
+model = "REPLACE_ME"
+api_key_env = "GEMINI_API_KEY"
+
+[[models]]
+name = "grok"
+enabled = false
+provider = "openai_compat"
+base_url = "https://api.x.ai/v1"
+model = "REPLACE_ME"
+api_key_env = "XAI_API_KEY"
+
+[[models]]
+name = "surface-baseline"
+provider = "surface"

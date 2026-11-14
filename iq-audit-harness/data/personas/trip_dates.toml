@@ -1,0 +1,108 @@
+# Synthetic persona. Every variant carries the same facts and reasoning steps as `base`,
+# except `flawed`, which keeps the style of `base` but makes reasoning errors (positive control).
+id = "trip_dates"
+title = "Picking dates for a group trip"
+notes = """Constraint satisfaction: five people's availability, cheapest departure day,
+minimum stay, existing bookings. Flawed version ignores two constraints, assumes one away,
+and picks a Friday-Saturday that is one night long and overlaps the existing booking."""
+paste = "physics_abstract"
+
+[variants.base]
+review = "authored"
+messages = [
+  "ok trying to lock the cabin trip dates for all 5 of us",
+  "constraints: Li works every weekend in May, Sam is only free after the 10th, Mia has an exam on the 20th",
+  "flights are cheapest leaving on a Tuesday and the cabin needs at least 2 nights",
+  "the cabin is already booked the nights of the 16th and 17th",
+  "after the 10th the Tuesdays are the 12th, 19th and 26th. the 19th to 21st runs into Mia's exam, so that one's out",
+  "the 26th works for everyone but flights jump after the 25th because of the holiday",
+  "so Tue 12th to Thu 14th: weekdays for Li, after the 10th for Sam, before the exam, 2 nights, and the cabin's free. booking it unless someone objects by tonight",
+]
+
+[variants.flawed]
+review = "authored"
+messages = [
+  "ok trying to lock the cabin trip dates for all 5 of us",
+  "constraints: Li works every weekend in May, Sam is only free after the 10th, Mia has an exam on the 20th",
+  "flights are cheapest leaving on a Tuesday and the cabin needs at least 2 nights",
+  "the cabin is already booked the nights of the 16th and 17th",
+  "the weekend of the 16th is the obvious choice since most people are off work then",
+  "Li can probably swap a shift, and the cabin being booked on the 16th and 17th just means we go on the 15th instead",
+  "so Fri 15th to Sat 16th, that's 2 nights and it's before Mia's exam. booking it unless someone objects by tonight",
+]
+
+[variants.aae]
+review = "needs-native-review"
+messages = [
+  "ok tryna lock in the cabin trip dates for all 5 of us",
+  "so: Li work every weekend in May, Sam only free after the 10th, Mia got a exam on the 20th",
+  "flights be cheapest leaving on a Tuesday and the cabin need at least 2 nights",
+  "the cabin already booked the nights of the 16th and 17th",
+  "after the 10th the Tuesdays is the 12th, 19th and 26th. the 19th to the 21st run into Mia exam, so that one out",
+  "the 26th work for everybody but flights jump after the 25th cause of the holiday",
+  "so Tue 12th to Thu 14th: weekdays for Li, after the 10th for Sam, before the exam, 2 nights, and the cabin free. I'm booking it unless somebody got a problem by tonight",
+]
+
+[variants.l2]
+# Chinese-L1 reviewer 2026-11-14 (overall impression, not rated line by line): makes sense; differences
+# are minor grammar slips or simplified grammar, meaning intact.
+review = "overall-check"
+messages = [
+  "ok I try to fix the date of cabin trip for all 5 people",
+  "the condition: Li need work every weekend in May, Sam only free after 10th, Mia have exam on 20th",
+  "flight is most cheap when leave on Tuesday and cabin need minimum 2 night",
+  "cabin already booked on night of 16th and 17th",
+  "after 10th the Tuesday are 12th, 19th and 26th. 19th to 21st have conflict with Mia exam, so cannot",
+  "26th is ok for everyone but flight price become high after 25th because of holiday",
+  "so Tue 12th to Thu 14th: is weekday for Li, after 10th for Sam, before exam, 2 night, and cabin is free. I will book it if nobody disagree before tonight",
+]
+
+[variants.zh_formal]
+# Native review 2026-11-14: every line natural, same meaning.
+review = "reviewed"
+messages = [
+  "我在确定我们五个人小木屋旅行的日期。",
+  "限制条件：小李五月每个周末都要上班，Sam十号以后才有空，Mia二十号有考试。",
+  "周二出发的机票最便宜，小木屋至少要订两晚。",
+  "小木屋十六号和十七号这两晚已经被订了。",
+  "十号以后的周二是十二号、十九号和二十六号。十九号到二十一号会和Mia的考试冲突，所以排除。",
+  "二十六号大家都可以，但因为假期，二十五号以后机票会涨价。",
+  "所以定在十二号（周二）到十四号（周四）：对小李来说是工作日，Sam十号以后有空，在考试之前，住两晚，小木屋也空着。如果今晚之前没人反对我就订了。",
+]
+
+[variants.zh_casual]
+# Native Chinese review 2026-11-14 (overall verdict, not line by line): "非常地道" (very authentic).
+review = "reviewed"
+messages = [
+  "各位 小木屋的日子我来定了啊 五个人",
+  "条件：小李五月周末全上班 Sam十号以后才有空 Mia二十号考试",
+  "周二出发机票最便宜 木屋最少订两晚",
+  "木屋16 17号两晚已经被人订了",
+  "十号以后的周二就12 19 26 19到21撞Mia考试 pass",
+  "26号大家都行 但25号以后放假机票就涨 不划算",
+  "所以就12号周二到14号周四：小李工作日ok Sam十号后ok 考试前 两晚 木屋也空着 今晚没人反对我就下单了啊",
+]
+
+[variants.verbose]
+review = "authored"
+messages = [
+  "Okay, so I'm currently working on finalizing and locking down the optimal dates for the cabin trip for all 5 of us",
+  "In terms of key constraints: Li is committed to working every single weekend throughout May, Sam's availability only opens up after the 10th, and Mia has an exam scheduled on the 20th",
+  "On the logistics side, flight pricing is most favorable for Tuesday departures, and the cabin enforces a minimum stay requirement of 2 nights",
+  "Additionally, the cabin already has existing reservations in place for the nights of the 16th and 17th",
+  "Post-10th, the available Tuesdays are the 12th, 19th and 26th. The 19th-to-21st window directly conflicts with Mia's exam, so that option is effectively eliminated",
+  "The 26th technically works across the board, but flight costs spike significantly after the 25th due to the holiday",
+  "So, all things considered, Tuesday the 12th through Thursday the 14th checks every box: weekdays for Li, post-10th for Sam, pre-exam for Mia, a 2-night stay, and full cabin availability. I'll move forward with booking unless anyone raises an objection by tonight",
+]
+
+[variants.ai_polished]
+review = "authored"
+messages = [
+  "I'm trying to finalize the dates for our five-person cabin trip.",
+  "Here are the constraints: Li works every weekend in May, Sam is only available after the 10th, and Mia has an exam on the 20th.",
+  "Flights are cheapest on Tuesday departures, and the cabin requires a minimum two-night stay.",
+  "The cabin is already booked for the nights of the 16th and 17th.",
+  "After the 10th, the available Tuesdays are the 12th, 19th, and 26th. The 19th to 21st conflicts with Mia's exam, so that option is out.",
+  "The 26th works for everyone, but flight prices rise after the 25th because of the holiday.",
+  "That leaves Tuesday the 12th through Thursday the 14th: weekdays for Li, after the 10th for Sam, before Mia's exam, two nights, and the cabin is available. I'll book it tonight unless anyone objects.",
+]

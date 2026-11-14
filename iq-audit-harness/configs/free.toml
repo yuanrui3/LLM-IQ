@@ -1,0 +1,79 @@
+# Free-tier audit on Gemini and Qwen. Costs nothing if the free-tier settings below are right.
+#
+# 1. Gemini: create a key in Google AI Studio (aistudio.google.com) in a Google Cloud project
+#    WITHOUT billing turned on. A project with billing is on the paid tier.
+#    Free-tier limits are low and keep changing (some models allow only ~20 requests a day);
+#    AI Studio shows your current limits per model.
+#        $env:GEMINI_API_KEY = "..."
+#
+# 2. Qwen: Alibaba Cloud Model Studio, Singapore region (International). That is currently the only
+#    region with the new-user free quota: about 1M tokens per model, valid 90 days.
+#    On the model's detail page, turn ON "Free quota only". It is OFF by default, and without it
+#    calls are billed once the free quota runs out. A Singapore key only works with the -intl endpoint.
+#        $env:DASHSCOPE_API_KEY = "..."
+#
+# 3. Check the model ids your keys can use, then dry-run:
+#        python -m iqaudit models configs/free.toml --filter flash
+#        python -m iqaudit run configs/free.toml --dry-run
+#
+# If a daily limit stops a model, just run the same command again after it resets:
+# finished calls are skipped, and calls are ordered so each pass covers every condition once.
+
+[run]
+name = "free"
+repeats = 2
+empty_repeats = 4
+
+[[cells]]
+framings = ["third_person"]
+variants = ["base", "flawed", "aae", "l2", "zh_formal", "zh_casual", "verbose", "ai_polished",
+            "pasted", "phone_style", "format_json", "empty"]
+
+[[cells]]
+framings = ["self_viral"]
+variants = ["base", "flawed", "zh_formal", "zh_casual", "empty"]
+
+[[cells]]
+framings = ["self_flattering", "forensic"]
+variants = ["base", "flawed", "empty"]
+
+[[cells]]
+framings = ["self_viral_zh"]
+variants = ["base", "zh_formal", "zh_casual", "empty"]
+
+# Fix test (2026-11-14): same neutral question plus an instruction to ignore surface features.
+# Compare each variant's shift here with its shift under third_person. Qwen only, to fit its free quota.
+[[cells]]
+framings = ["third_person_debiased"]
+variants = ["base", "flawed", "aae", "l2", "verbose", "pasted", "phone_style", "zh_casual"]
+models = ["qwen"]
+
+[[models]]
+name = "gemini-3.5-flash"
+provider = "openai_compat"
+base_url = "https://generativelanguage.googleapis.com/v1beta/openai/"
+# Pinned. On 2026-11-13 gemini-3.8-flash was overloaded (503 "high demand") and its free daily quota ran out
+# on retries; gemini-3.7-flash and the gemini-flash-latest alias timed out; gemini-3.5-flash answered.
+model = "gemini-3.5-flash"
+api_key_env = "GEMINI_API_KEY"
+concurrency = 1
+timeout_s = 120
+max_retries = 1                   # every retry counts against the free daily quota
+rpm = 8                           # stay under the free tier's per-minute limit
+# max_calls_per_run = 18          # uncomment and set just under your daily limit if it is small
+
+[[models]]
+name = "qwen"
+provider = "openai_compat"
+# Standard Singapore endpoint. The workspace's own endpoint
+# (https://<workspace-id>.ap-southeast-1.maas.aliyuncs.com/compatible-mode/v1) listed models but
+# returned 403 "Access to model denied" for chat on 2026-11-13, so this one is used instead.
+base_url = "https://dashscope-intl.aliyuncs.com/compatible-mode/v1"
+model = "qwen3.7-plus"            # "Free Quota Only" is ON for this model; each model has its own 1M free tokens
+api_key_env = "DASHSCOPE_API_KEY"
+concurrency = 2
+repeats = 3                       # ~1M free tokens covers this easily (~300 calls, roughly 200k tokens)
+
+[[models]]
+name = "surface-baseline"
+provider = "surface"

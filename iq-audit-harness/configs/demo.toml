@@ -1,0 +1,37 @@
+# Offline demo: no API key, no cost, finishes in seconds.
+#   planted-mock      a simulated rater with known biases (see iqaudit/providers/offline.py)
+#   surface-baseline  scores word length and vocabulary only, with no understanding
+# Use it to see what the report looks like and what "biased" and "presentation-only" profiles look like.
+
+[run]
+name = "demo"
+repeats = 6
+
+# Every surface probe under the neutral third-person question.
+[[cells]]
+framings = ["third_person"]
+variants = ["base", "flawed", "aae", "l2", "zh_formal", "zh_casual", "verbose", "ai_polished",
+            "pasted", "phone_style", "format_json", "empty"]
+
+# Same chats asked the way people ask in the viral prompt, plus Chinese content asked in English.
+[[cells]]
+framings = ["self_viral"]
+variants = ["base", "flawed", "zh_formal", "zh_casual", "empty"]
+
+# Flattering anchor and the "forensic WAIS-IV" role prompt.
+[[cells]]
+framings = ["self_flattering", "forensic"]
+variants = ["base", "flawed", "empty"]
+
+# Chinese content asked in Chinese.
+[[cells]]
+framings = ["self_viral_zh"]
+variants = ["base", "zh_formal", "zh_casual", "empty"]
+
+[[models]]
+name = "planted-mock"
+provider = "mock"
+
+[[models]]
+name = "surface-baseline"
+provider = "surface"

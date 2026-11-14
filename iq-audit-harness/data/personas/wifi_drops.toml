@@ -1,0 +1,109 @@
+# Synthetic persona. Every variant carries the same facts and reasoning steps as `base`,
+# except `flawed`, which keeps the style of `base` but makes reasoning errors (positive control).
+id = "wifi_drops"
+title = "Troubleshooting evening Wi-Fi drops"
+notes = """Systematic diagnosis: isolate variables, change one thing at a time, verify.
+Flawed version: blames the laptop despite both devices dropping, changes four things at once,
+credits an irrelevant cable after one good evening, dismisses the congestion clue."""
+paste = "python_code"
+
+[variants.base]
+review = "authored"
+messages = [
+  "the wifi keeps dropping every evening around 8 and it's driving me nuts",
+  "it's only the 5GHz network, 2.4 stays up, and it hits my laptop and my phone at the same time",
+  "so it's probably not my laptop. next time it dropped I plugged the laptop into the router with a cable and the internet was fine",
+  "that rules out the provider too, so it's the wireless part of the router",
+  "8pm is when everyone in the building gets home, so my guess is the channel gets crowded. the scanner app shows 6 neighbors on channel 36",
+  "switched only the channel to 149 and didn't touch anything else, so if it fixes it I'll know why",
+  "3 evenings in a row with no drops now. if it comes back I'll try a different channel before buying a new router",
+]
+
+[variants.flawed]
+review = "authored"
+messages = [
+  "the wifi keeps dropping every evening around 8 and it's driving me nuts",
+  "it's only the 5GHz network, 2.4 stays up, so it's probably my laptop's wifi card going bad",
+  "I restarted the router, changed the DNS, updated the laptop and bought a new ethernet cable all on saturday",
+  "sunday evening it didn't drop at all, so the new cable must have fixed it",
+  "8pm is when everyone in the building gets home, but that can't matter since their wifi is in their own apartments",
+  "the scanner app shows 6 neighbors on channel 36 but that's normal, everyone uses the same channels",
+  "one good evening is enough proof for me. if it comes back I'll just buy a new router, probably the cheapest fix",
+]
+
+[variants.aae]
+review = "needs-native-review"
+messages = [
+  "the wifi keep dropping every evening round 8 and it's driving me crazy",
+  "it's only the 5GHz network, the 2.4 stay up, and it hit my laptop and my phone at the same time",
+  "so it prolly ain't my laptop. next time it dropped I plugged the laptop straight into the router with a cable and the internet was straight",
+  "so it ain't the provider neither, it's the wireless part of the router",
+  "8pm when everybody in the building get home, so I'm thinking the channel get crowded. the scanner app showing 6 neighbors on channel 36",
+  "I switched only the channel to 149 and ain't touch nothing else, so if it fix it I'ma know why",
+  "3 evenings straight with no drops now. if it come back I'ma try a different channel before I go buy a new router",
+]
+
+[variants.l2]
+# Chinese-L1 reviewer 2026-11-14 (overall impression, not rated line by line): makes sense; differences
+# are minor grammar slips or simplified grammar, meaning intact.
+review = "overall-check"
+messages = [
+  "the wifi always drop every evening around 8 o'clock, I am very annoying",
+  "only 5GHz network have problem, 2.4 is ok, and my laptop and my phone drop in same time",
+  "so maybe is not laptop problem. next time when it drop I connect laptop to router with cable and internet is fine",
+  "this mean is not provider problem also, so is the wireless part of router",
+  "8pm is time everybody in the building come back home, so I guess the channel become crowded. scanner app show 6 neighbor use channel 36",
+  "I only change the channel to 149 and don't touch other thing, so if it fixed I will know the reason",
+  "already 3 evening continuous no drop. if it come back I will try other channel before buy new router",
+]
+
+[variants.zh_formal]
+# Native review 2026-11-14: meaning same on every line; line 1 "too polite/serious", line 5 "too expert".
+# Rewritten plainer, same facts; reviewer confirmed the rewrites as natural, same meaning.
+review = "reviewed"
+messages = [
+  "家里的Wi-Fi每天晚上八点左右就断，真的很烦。",
+  "只有5GHz网络会断，2.4GHz一直正常，而且笔记本和手机是同时断的。",
+  "所以应该不是笔记本的问题。下次断网时，我用网线把笔记本直接连到路由器上，网络是正常的。",
+  "这也排除了运营商的问题，所以是路由器无线部分的问题。",
+  "晚上八点正好是楼里大家都回家的时候，我猜是信道太挤了。我用软件扫了一下，有6家邻居都在用36信道。",
+  "我只把信道改成了149，其他设置都没动，这样如果好了就能知道原因。",
+  "现在已经连续三个晚上没断过了。如果再出现，我会先换别的信道，而不是直接买新路由器。",
+]
+
+[variants.zh_casual]
+# Native Chinese review 2026-11-14 (overall verdict, not line by line): "非常地道" (very authentic).
+review = "reviewed"
+messages = [
+  "家里wifi天天晚上八点准时断 心态崩了",
+  "只有5G那个断 2.4的没事 而且电脑手机一起断",
+  "那应该不是电脑的锅 上次断的时候我拿网线直连路由器 网是好的",
+  "那运营商也排除了 就是路由器无线那块的问题",
+  "八点刚好整栋楼都回家 估计是信道太挤了 扫了一下 6家邻居都在36信道 离谱",
+  "我就只把信道改成149 别的啥都没动 这样好了就知道是啥原因",
+  "连着三晚没断了 nb 要是再断我先换个信道试试 不急着买新路由器",
+]
+
+[variants.verbose]
+review = "authored"
+messages = [
+  "So the wifi has been consistently experiencing connectivity drops every single evening at approximately 8pm, and frankly it's becoming a significant source of frustration",
+  "Interestingly, the issue appears to be isolated exclusively to the 5GHz band, while the 2.4 network remains fully operational, and it impacts both my laptop and my phone simultaneously",
+  "That would suggest the laptop itself is likely not the root cause. During the next outage I established a hardwired ethernet connection directly to the router, and internet access was completely unaffected",
+  "That effectively eliminates the service provider as a variable as well, which isolates the problem to the router's wireless subsystem specifically",
+  "8pm happens to coincide with peak occupancy as residents return home, so my working hypothesis is channel congestion. The scanner app indicates 6 neighboring networks operating on channel 36",
+  "I've reconfigured only the channel to 149 while holding every other parameter constant, so if this resolves the issue I'll have clear causal attribution",
+  "We're now at 3 consecutive evenings with zero drops. Should it recur, my next step will be experimenting with an alternative channel prior to investing in new router hardware",
+]
+
+[variants.ai_polished]
+review = "authored"
+messages = [
+  "My Wi-Fi has been dropping every evening around 8 p.m., and it's become very frustrating.",
+  "Only the 5 GHz network is affected (the 2.4 GHz network stays up), and the drops hit my laptop and phone at the same time.",
+  "That suggests the laptop isn't the problem. During the next drop, I connected the laptop to the router with an Ethernet cable, and the internet worked fine.",
+  "That also rules out the internet provider, which points to the router's wireless side.",
+  "Since 8 p.m. is when most people in the building get home, I suspect channel congestion. A Wi-Fi scanner shows six neighboring networks on channel 36.",
+  "I changed only the channel, to 149, and left everything else untouched, so if the problem goes away I'll know why.",
+  "There have been no drops for three evenings in a row. If it returns, I'll try another channel before buying a new router.",
+]

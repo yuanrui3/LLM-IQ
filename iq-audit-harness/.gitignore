@@ -1,0 +1,6 @@
+__pycache__/
+*.pyc
+.venv/
+# Run outputs are regenerable; keep only the free-tier run, which holds the real results and findings.
+runs/*
+!runs/free/

@@ -1,0 +1,108 @@
+# Synthetic persona. Every variant carries the same facts and reasoning steps as `base`,
+# except `flawed`, which keeps the style of `base` but makes reasoning errors (positive control).
+id = "phone_plans"
+title = "Comparing two phone plans"
+notes = """Numeracy: break-even point and total cost over different time horizons.
+Flawed version: wrong break-even (10 vs 20 months), ignores the upfront phone cost,
+gets the one-year comparison backwards, skips checking the fine print."""
+paste = "legal_clause"
+
+[variants.base]
+review = "authored"
+messages = [
+  "ok so I'm finally comparing the two phone plans",
+  "Plan A is $45 a month and the phone is free. Plan B is $30 a month but I pay $300 for the phone upfront",
+  "B saves $15 a month, so the $300 phone pays for itself after 20 months",
+  "both contracts are 24 months, so over the full term A is 45 x 24 = $1080 and B is 30 x 24 + 300 = $1020",
+  "so B wins by $60, but only if I keep it the whole two years",
+  "if I switch after a year, A costs $540 and B costs $660, so A would be cheaper",
+  "I usually keep phones 3+ years so I'm going with B. unless there's an early termination fee, let me check that first",
+]
+
+[variants.flawed]
+review = "authored"
+messages = [
+  "ok so I'm finally comparing the two phone plans",
+  "Plan A is $45 a month and the phone is free. Plan B is $30 a month but I pay $300 for the phone upfront",
+  "B saves $15 a month, so the $300 phone pays for itself after 10 months",
+  "both contracts are 24 months, so over the full term B saves 15 x 24 = $360 compared to A",
+  "so B wins by $360, that's a lot",
+  "even if I switch after a year, B is still $180 ahead of A",
+  "I usually keep phones 3+ years so I'm going with B. no need to check the fine print, the math is pretty clear",
+]
+
+[variants.aae]
+review = "needs-native-review"
+messages = [
+  "ok so I'm finally finna compare these two phone plans",
+  "Plan A $45 a month and the phone free. Plan B $30 a month but I gotta pay $300 for the phone upfront",
+  "B save $15 a month, so the $300 phone pay for itself after 20 months",
+  "both contracts 24 months, so for the whole thing A come out to 45 x 24 = $1080 and B come out to 30 x 24 + 300 = $1020",
+  "so B win by $60, but only if I keep it the whole two years",
+  "if I switch after a year, A cost $540 and B cost $660, so A would be cheaper",
+  "I always be keeping my phones 3+ years so I'm going with B. unless it's a early termination fee, lemme check that first",
+]
+
+[variants.l2]
+# Chinese-L1 reviewer 2026-11-14 (overall impression, not rated line by line): makes sense; differences
+# are minor grammar slips or simplified grammar, meaning intact.
+review = "overall-check"
+messages = [
+  "ok so I am finally compare two phone plan",
+  "Plan A is 45 dollar per month and phone is free. Plan B is 30 dollar per month but I need pay 300 dollar for phone at first",
+  "B save 15 dollar every month, so the 300 dollar phone will pay back after 20 month",
+  "both contract is 24 month, so in total A is 45 x 24 = 1080 dollar and B is 30 x 24 + 300 = 1020 dollar",
+  "so B is win 60 dollar, but only if I keep it whole two year",
+  "if I change after one year, A cost 540 and B cost 660, so A will be more cheap",
+  "I usually use phone more than 3 year so I choose B. but maybe have early termination fee, I check it first",
+]
+
+[variants.zh_formal]
+# Native review 2026-11-14: every line natural, same meaning.
+review = "reviewed"
+messages = [
+  "我终于开始比较这两个手机套餐了。",
+  "A套餐每月45元，手机免费；B套餐每月30元，但需要先付300元买手机。",
+  "B每月省15元，所以300元的手机要20个月才能回本。",
+  "两个合约都是24个月，全程算下来A是45×24=1080元，B是30×24+300=1020元。",
+  "所以B便宜60元，但前提是我用满两年。",
+  "如果一年后就换，A花540元，B花660元，那反而是A更便宜。",
+  "我一般一部手机用三年以上，所以选B。不过要先确认一下有没有提前解约费。",
+]
+
+[variants.zh_casual]
+# Native Chinese review 2026-11-14 (overall verdict, not line by line): "非常地道" (very authentic).
+review = "reviewed"
+messages = [
+  "家人们 我终于开始比手机套餐了[捂脸]",
+  "A套餐45一个月 手机白送 B套餐30一个月 但是手机要先掏300",
+  "B一个月省15 300的手机得20个月才回本",
+  "合约都24个月 算下来A是45x24=1080 B是30x24+300=1020",
+  "所以B便宜60 但得用满两年才行哈",
+  "要是一年就换 A花540 B花660 那还是A香",
+  "我手机一般用三年起步 所以冲B了 等下 yysy先看看有没有违约金",
+]
+
+[variants.verbose]
+review = "authored"
+messages = [
+  "Okay, so after a fair amount of deliberation, I've finally gotten around to doing a proper side-by-side comparative analysis of the two phone plans on the table",
+  "From a pure cost-structure standpoint, Plan A comes in at $45 a month with the handset bundled in at zero upfront cost, whereas Plan B sits at $30 a month but front-loads a $300 capital outlay for the device itself",
+  "Essentially, B yields a $15 monthly delta in my favor, which means the $300 upfront investment effectively amortizes itself over a 20-month break-even horizon",
+  "Given that both contracts are structured around a 24-month term, the total cost of ownership works out to 45 x 24 = $1080 for A versus 30 x 24 + 300 = $1020 for B",
+  "So, at the end of the day, B delivers a net $60 advantage, but that's contingent on me fully committing to the entire two-year lifecycle",
+  "Conversely, if I were to pivot and switch after twelve months, A would total $540 while B would total $660, which actually flips the calculus in A's favor",
+  "Historically my device-retention cycle tends to run 3+ years, so I'm leaning toward B as the optimal play, although in the interest of due diligence I need to verify whether there's an early termination fee baked in before I fully commit",
+]
+
+[variants.ai_polished]
+review = "authored"
+messages = [
+  "I've finally sat down to compare the two phone plans.",
+  "Plan A costs $45 per month and includes the phone at no charge. Plan B costs $30 per month but requires a $300 upfront payment for the phone.",
+  "Since Plan B saves $15 per month, the $300 phone pays for itself after 20 months.",
+  "Both contracts run for 24 months. Over the full term, Plan A totals $1,080 (45 × 24), while Plan B totals $1,020 (30 × 24 + 300).",
+  "Plan B therefore comes out $60 ahead, but only if I keep it for the full two years.",
+  "If I switch after one year, Plan A would cost $540 and Plan B $660, making Plan A the cheaper option.",
+  "Because I typically keep my phones for three years or more, I'll go with Plan B. Before committing, though, I'll check whether there's an early termination fee.",
+]
