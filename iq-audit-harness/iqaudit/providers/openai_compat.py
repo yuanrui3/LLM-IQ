@@ -11,7 +11,7 @@ import os
 
 import openai
 
-from .base import FatalProviderError, Request, Response
+from .base import FatalProviderError, ProviderOverloaded, Request, Response
 from .base import quota_exhausted as _quota_exhausted
 from .base import short_error as _short
 
@@ -62,6 +62,13 @@ class OpenAICompatProvider:
             raise FatalProviderError(f"credentials rejected: {_short(e)}") from e
         except (openai.NotFoundError, openai.BadRequestError) as e:
             raise FatalProviderError(f"request rejected for {self.model!r}: {_short(e)}") from e
+        except openai.APITimeoutError as e:
+            raise ProviderOverloaded(f"request timed out ({_short(e)})") from e
+        except openai.APIStatusError as e:
+            text = _error_text(e).lower()
+            if e.status_code in (503, 529) or "high demand" in text or "overloaded" in text:
+                raise ProviderOverloaded(f"service busy: {_short(Exception(_error_text(e)))}") from e
+            raise
 
         choice = resp.choices[0]
         usage = resp.usage

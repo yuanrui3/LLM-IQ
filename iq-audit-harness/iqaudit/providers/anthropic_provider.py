@@ -12,7 +12,7 @@ from __future__ import annotations
 
 import anthropic
 
-from .base import FatalProviderError, Request, Response
+from .base import FatalProviderError, ProviderOverloaded, Request, Response
 
 
 class AnthropicProvider:
@@ -45,6 +45,12 @@ class AnthropicProvider:
             raise FatalProviderError(f"Unknown model {self.model!r}: {e.message}") from e
         except anthropic.BadRequestError as e:
             raise FatalProviderError(f"Request rejected for {self.model!r}: {e.message}") from e
+        except anthropic.APITimeoutError as e:
+            raise ProviderOverloaded(f"request timed out: {e}") from e
+        except anthropic.APIStatusError as e:
+            if e.status_code in (503, 529):
+                raise ProviderOverloaded(f"service busy ({e.status_code}): {e.message}") from e
+            raise
         except TypeError as e:
             # The SDK raises TypeError when no credentials resolve, or for an unsupported argument.
             raise FatalProviderError(

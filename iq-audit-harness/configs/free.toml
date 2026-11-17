@@ -58,7 +58,8 @@ model = "gemini-3.5-flash"
 api_key_env = "GEMINI_API_KEY"
 concurrency = 1
 timeout_s = 120
-max_retries = 1                   # every retry counts against the free daily quota
+max_retries = 0                   # failed requests count against the free daily quota; never retry within a run
+stop_after_overloads = 3          # 3 "high demand"/timeout errors in a row: stop and save the quota for tomorrow
 rpm = 8                           # stay under the free tier's per-minute limit
 # max_calls_per_run = 18          # uncomment and set just under your daily limit if it is small
 

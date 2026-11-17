@@ -1,7 +1,7 @@
 """Rater backends. SDK imports are lazy so the offline raters work with the standard library alone."""
 from __future__ import annotations
 
-from .base import FatalProviderError, Provider, Request, Response
+from .base import FatalProviderError, Provider, ProviderOverloaded, Request, Response
 
 OFFLINE_PROVIDERS = ("mock", "surface")
 
@@ -29,4 +29,5 @@ def make_provider(cfg: dict) -> Provider:
     raise FatalProviderError(f"unknown provider {kind!r} (expected mock, surface, anthropic, openai_compat)")
 
 
-__all__ = ["FatalProviderError", "Provider", "Request", "Response", "make_provider", "OFFLINE_PROVIDERS"]
+__all__ = ["FatalProviderError", "Provider", "ProviderOverloaded", "Request", "Response", "make_provider",
+           "OFFLINE_PROVIDERS"]

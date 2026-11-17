@@ -66,6 +66,16 @@ class RunnerTest(unittest.TestCase):
         self.assertEqual(len(after), len(lines) + 1)
         self.assertEqual(json.loads(after[-1])["key"], rows[0]["key"])
 
+    def test_stops_after_repeated_overloads(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            out = Path(tmp) / "r"
+            cfg = {**copy.deepcopy(CFG), "models": [{"name": "busy", "provider": "mock", "concurrency": 1,
+                                                     "busy_after": 2, "stop_after_overloads": 3}]}
+            run(copy.deepcopy(cfg), out, yes=True, quiet=True)
+            rows = [json.loads(l) for l in (out / "results.jsonl").read_text(encoding="utf-8").splitlines()]
+        self.assertEqual(sum(not r.get("error") for r in rows), 2)
+        self.assertEqual(sum(bool(r.get("error")) for r in rows), 3)  # stopped after 3 busy errors in a row
+
     def test_rate_limiter_spacing(self):
         lim = RateLimiter(rpm=600)  # 0.1 s apart
         t0 = time.monotonic()

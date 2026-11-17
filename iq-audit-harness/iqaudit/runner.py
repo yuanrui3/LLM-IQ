@@ -20,7 +20,7 @@ from .data import DATA_DIR, data_fingerprint, load_pastes, load_personas
 from .parse import parse_estimate
 from .probes import Condition, build_condition
 from .prompts import FRAMINGS, build_prompt, prompt_sha, render_transcript
-from .providers import OFFLINE_PROVIDERS, FatalProviderError, Request, make_provider
+from .providers import OFFLINE_PROVIDERS, FatalProviderError, ProviderOverloaded, Request, make_provider
 
 
 @dataclass(frozen=True)
@@ -262,6 +262,8 @@ def run(cfg: dict, out_dir: Path, yes: bool = False, dry_run: bool = False,
         stop = threading.Event()
         fatal: list[str] = []
         limiter = RateLimiter(mcfg.get("rpm"))
+        overload_limit = int(mcfg.get("stop_after_overloads", 0))
+        overloads = [0]  # consecutive "service busy" errors, shared by this model's workers
 
         def do(job: Job) -> None:
             if stop.is_set():
@@ -292,7 +294,16 @@ def run(cfg: dict, out_dir: Path, yes: bool = False, dry_run: bool = False,
                 row.update(error=f"{type(e).__name__}: {e}", latency_s=round(time.perf_counter() - t0, 2),
                            ts=datetime.now(timezone.utc).isoformat(timespec="seconds"))
                 write_row(row, None)
+                if isinstance(e, ProviderOverloaded) and overload_limit:
+                    with lock:
+                        overloads[0] += 1
+                        if overloads[0] >= overload_limit and not stop.is_set():
+                            stop.set()
+                            fatal.append(f"service busy {overloads[0]} times in a row; stopped to save quota, "
+                                         "run again later to continue")
                 return
+            with lock:
+                overloads[0] = 0
             parsed = parse_estimate(resp.text)
             row.update(
                 estimate=parsed.estimate, low=parsed.low, high=parsed.high, declined=parsed.declined,

@@ -26,6 +26,12 @@ class FatalProviderError(Exception):
     """Configuration or credential problem: retrying will not help, so the runner stops this model."""
 
 
+class ProviderOverloaded(Exception):
+    """The service is busy (503/529, "high demand", timeouts). Recorded as a retryable error; after
+    `stop_after_overloads` of these in a row the runner stops the model, so a free daily quota is not
+    spent on requests that are failing anyway."""
+
+
 # Phrases vendors use when a daily or free quota (not a per-minute limit) is used up.
 # Gemini: quota ids like "GenerateRequestsPerDayPerProjectPerModel-FreeTier".
 # Qwen/DashScope with "Free quota only" on: "...FreeTierOnly: The free tier of the model has been exhausted".

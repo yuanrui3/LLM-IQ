@@ -14,8 +14,9 @@ from __future__ import annotations
 import hashlib
 import random
 import re
+import threading
 
-from .base import Request, Response
+from .base import ProviderOverloaded, Request, Response
 
 DEFAULT_EFFECTS: dict = {
     "base_iq": 112.0,
@@ -46,8 +47,17 @@ class PlantedMock:
         self.name = cfg.get("name", "mock")
         self.system = None
         self.fx = _merge(DEFAULT_EFFECTS, cfg.get("effects", {}))
+        # Test hook: after this many calls, every call reports the service as busy.
+        self.busy_after = cfg.get("busy_after")
+        self.calls = 0
+        self._lock = threading.Lock()
 
     def complete(self, req: Request) -> Response:
+        with self._lock:
+            self.calls += 1
+            n = self.calls
+        if self.busy_after is not None and n > int(self.busy_after):
+            raise ProviderOverloaded("mock service busy")
         m = req.meta
         seed = hashlib.sha256(
             f"{self.name}|{m['persona']}|{m['variant']}|{m['framing']}|{m['repeat']}".encode()

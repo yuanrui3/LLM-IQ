@@ -112,7 +112,7 @@
     "trip_dates",
     "wifi_drops"
   ],
-  "data_fingerprint": "eab22fc56d232d12",
-  "started": "2026-11-14T15:49:59+00:00",
+  "data_fingerprint": "18a26d9262cdbb3b",
+  "started": "2026-11-17T14:06:54+00:00",
   "python": "3.14.8"
 }
