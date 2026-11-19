@@ -1,0 +1,107 @@
+# Synthetic persona. Every variant carries the same facts and reasoning steps as `base`,
+# except `flawed`, which keeps the style of `base` but makes reasoning errors (positive control).
+id = "deposit_dispute"
+title = "Disputing a withheld security deposit"
+notes = """Evidence and rules: sort each deduction into normal wear or damage, use dated move-in photos,
+count days against the lease deadline, and ask only for the contested amount. No real jurisdiction's law.
+Flawed version: treats move-in photos that do not show the spot as proof the stain was already there,
+calls a blind the tenant admits breaking normal wear because it was old, counts 42 days after move-out
+as 42 days late (it is 12), and concludes with nothing in the lease to support it that lateness voids
+every deduction, so asks for all $450."""
+paste = "python_code"
+
+[variants.base]
+review = "authored"
+messages = [
+  "landlord kept $450 of my $1200 deposit and I think most of it's wrong",
+  "the list: $250 to repaint the living room, $120 carpet cleaning for a stain, $80 for a broken blind",
+  "lease ran june 1 2023 to may 31 2026, 3 years. faded paint and a few nail holes after that long is normal wear, not damage",
+  "the stain: my move-in photos from june 1 2023 show the same stain by the window, so it was there before me",
+  "the blind I did break, so $80 is fair",
+  "also the lease gives them 30 days after move-out to return it or send the list. moved out may 31, it came july 12, that's 42 days, so 12 days late",
+  "so I'll ask in writing for $370 (450 - 80), attach the dated photos, point out the late list, and give them 14 days to reply",
+]
+
+[variants.flawed]
+review = "authored"
+messages = [
+  "landlord kept $450 of my $1200 deposit and I think most of it's wrong",
+  "the list: $250 to repaint the living room, $120 carpet cleaning for a stain, $80 for a broken blind",
+  "lease ran june 1 2023 to may 31 2026, 3 years. faded paint and a few nail holes after that long is normal wear, not damage",
+  "the stain: my move-in photos don't show that corner by the window, so it must have been there before me",
+  "the blind I did break, but it was old anyway, so that's normal wear too",
+  "also the lease gives them 30 days after move-out to return it or send the list. I moved out may 31 and it came july 12, so they're 42 days late",
+  "that late means they lose the right to keep any of it, so I'll ask in writing for the full $450 and give them 14 days to reply",
+]
+
+[variants.aae]
+review = "needs-native-review"
+messages = [
+  "landlord kept $450 of my $1200 deposit and I think most of it wrong",
+  "the list say: $250 to repaint the living room, $120 carpet cleaning for a stain, $80 for a broken blind",
+  "lease ran june 1 2023 to may 31 2026, so 3 years. faded paint and a few nail holes after that long just normal wear, it ain't damage",
+  "the stain: my move-in photos from june 1 2023 show the same stain by the window, so it was there before me",
+  "the blind I did break, so the $80 fair",
+  "also the lease give them 30 days after move-out to return it or send the list. I moved out may 31 and it ain't come till july 12, that's 42 days, so they 12 days late",
+  "so I'm finna ask in writing for $370 back (450 - 80), put the dated photos in, point out the list was late, and give them 14 days to get back to me",
+]
+
+[variants.l2]
+review = "needs-native-review"
+messages = [
+  "landlord keep $450 from my $1200 deposit, I think most part is wrong",
+  "the list: $250 for repaint living room, $120 for clean carpet because of stain, $80 for broken blind",
+  "lease is from june 1 2023 to may 31 2026, so 3 year. after so long time the paint become faded and have few nail hole, this is normal wear, not damage",
+  "about stain: my move-in photo from june 1 2023 already show same stain near window, so it is there before I move in",
+  "the blind is broken by me, so $80 is fair",
+  "also lease say they have 30 days after move out to return deposit or send list. I move out on may 31 and it come on july 12, this is 42 days, so 12 days late",
+  "so I will ask in writing to return $370 (450 - 80), attach photo with date, tell them list is late, and give them 14 days for reply",
+]
+
+[variants.zh_formal]
+review = "needs-native-review"
+messages = [
+  "房东扣了我1200元押金里的450元，我觉得大部分都扣得不对。",
+  "扣款清单是：客厅重新刷漆250元，清洗地毯污渍120元，一个坏了的百叶窗80元。",
+  "租约是从2023年6月1日到2026年5月31日，整整三年。住了这么久，墙漆褪色、墙上有几个钉子眼，都是正常损耗，不算损坏。",
+  "关于污渍：我2023年6月1日入住时拍的照片里，窗边就有同样的污渍，所以是我搬进来之前就有的。",
+  "百叶窗确实是我弄坏的，所以这80元扣得合理。",
+  "另外，租约上写着搬走后30天内要退押金或者给扣款清单。我是5月31日搬走的，清单7月12日才到，一共42天，晚了12天。",
+  "所以我打算书面要求退回370元（450减80），附上带日期的照片，指出清单晚到了，并给他们14天时间答复。",
+]
+
+[variants.zh_casual]
+review = "needs-native-review"
+messages = [
+  "押金1200 房东扣了我450 感觉大部分都扣得没道理啊",
+  "清单是这样的：客厅重新刷墙250 地毯污渍清洗120 百叶窗坏了80",
+  "租期23年6月1号到26年5月31号 整三年 住这么久墙褪色 有几个钉子眼 这不就正常损耗吗 又不是损坏",
+  "那块污渍 我23年6月1号入住拍的照片里窗边就有 一模一样 不是我搞的",
+  "yysy百叶窗确实是我弄坏的[捂脸] 这80认了",
+  "还有 合同写的搬走30天内要退押金或者给清单 我5月31号搬的 清单7月12号才到 都42天了 晚了12天啊",
+  "所以我打算书面找他要回370 就是450减80 附上带日期的照片 说清楚清单晚了 给他14天回复 就这样吧",
+]
+
+[variants.verbose]
+review = "authored"
+messages = [
+  "So I've just been notified that the landlord has elected to retain $450 of my $1200 security deposit, and after an initial review I believe the majority of those deductions are not justified",
+  "The itemized breakdown is as follows: $250 to repaint the living room, $120 for carpet cleaning to address a stain, and $80 for a broken blind",
+  "For context, the lease term ran from June 1 2023 through May 31 2026, so a full 3 years. Faded paint and a handful of nail holes over that kind of timeframe fall squarely into the category of normal wear and tear, not damage",
+  "Regarding the stain: my move-in photos from June 1 2023 clearly document the same stain by the window, so it's a pre-existing condition that predates my tenancy",
+  "The blind, in the interest of full transparency, I did break, so the $80 deduction is fair and I'm prepared to absorb that",
+  "Additionally, the lease stipulates a 30-day window after move-out to either return the deposit or furnish the itemized list. I vacated May 31 and it didn't arrive until July 12, which is 42 days, so they're 12 days past the deadline",
+  "So my plan going forward is to submit a formal written request for $370 (450 - 80), leverage the dated photos as supporting documentation, flag the late list, and give them a 14-day window to respond, which holistically represents a reasonable, well-documented ask",
+]
+
+[variants.ai_polished]
+review = "authored"
+messages = [
+  "My landlord kept $450 of my $1,200 security deposit, and I believe most of that deduction is unjustified.",
+  "The itemized list includes $250 to repaint the living room, $120 for carpet cleaning to remove a stain, and $80 for a broken blind.",
+  "My lease ran from June 1, 2023, to May 31, 2026, a full three years. Faded paint and a few nail holes after that long are normal wear and tear, not damage.",
+  "As for the stain, my move-in photos from June 1, 2023, show the same stain by the window, so it was there before I moved in.",
+  "I did break the blind, so the $80 charge is fair.",
+  "The lease also gives the landlord 30 days after move-out to return the deposit or send an itemized list. I moved out on May 31 and received the list on July 12, which is 42 days later, or 12 days past the deadline.",
+  "I'll send a written request for $370 ($450 minus $80), attach the dated photos, point out that the list arrived late, and give them 14 days to respond.",
+]

@@ -1,0 +1,107 @@
+# Synthetic persona. Every variant carries the same facts and reasoning steps as `base`,
+# except `flawed`, which keeps the style of `base` but makes reasoning errors (positive control).
+id = "moving_day"
+title = "Planning a move with a rented van"
+notes = """Planning under capacity and time limits: van space counted in box-equivalents, number of trips,
+drive time, a two-person job tied to a helper who leaves at noon, and a hard key deadline.
+Flawed version: ignores the furniture's volume (splits the boxes 20/20 and puts the furniture in the gaps,
+so one trip holds 40 boxes' worth in a 30-box van), saves the two-person furniture for after the helper
+leaves and assumes he will stay, adds 40 minutes to 11:20 and gets 11:40, and claims tons of buffer
+when the corrected times leave none and no time to clean."""
+paste = "legal_clause"
+
+[variants.base]
+review = "authored"
+messages = [
+  "ok planning saturday's move, got a rental van for the day",
+  "40 boxes plus the couch, bed and dresser. the van fits about 30 boxes and the 3 big pieces take up the room of about 20",
+  "so that's 60 boxes worth, 2 full trips. the drive is 40 min each way",
+  "hard limits: keys back to the old landlord by 3pm, and Jake can only help till noon",
+  "I can't lift the couch or dresser alone, so the furniture plus 10 boxes goes on trip 1 while Jake's here",
+  "trip 1: load 9 to 10, there by 10:40, unload together by 11:20, back at the old place at 12 when he leaves",
+  "trip 2 is the other 30 boxes, about an hour to load alone, so 12 to 1. sweep 30 min, hand the keys back at 1:30, then drive over. 90 min to spare",
+]
+
+[variants.flawed]
+review = "authored"
+messages = [
+  "ok planning saturday's move, got a rental van for the day",
+  "40 boxes plus the couch, bed and dresser. the van fits about 30 boxes and the 3 big pieces take up the room of about 20",
+  "so 2 trips of 20 boxes each, and the furniture can go in the gaps. the drive is 40 min each way",
+  "hard limits: keys back to the old landlord by 3pm, and Jake can only help till noon",
+  "the couch and dresser need 2 people, but boxes go faster, so we'll do boxes first and save the furniture for trip 2",
+  "trip 1: load 9 to 10, there by 10:40, unload together by 11:20, back at the old place by 11:40",
+  "trip 2 is the furniture and the other 20 boxes, load 11:40 to 12:40, Jake can probably stay a bit. there by 1:20, unloaded by 2, back by 2:40 for the keys. tons of buffer",
+]
+
+[variants.aae]
+review = "needs-native-review"
+messages = [
+  "ok tryna plan moving day for saturday, got a rental van for the day",
+  "it's 40 boxes plus the couch, bed and dresser. the van fit about 30 boxes and the 3 big pieces take up the room of about 20",
+  "so that's 60 boxes worth, 2 full trips. the drive 40 min each way",
+  "hard limits: the keys gotta go back to the old landlord by 3pm, and Jake can only help till noon",
+  "ain't no way I can lift the couch or the dresser by myself, so the furniture plus 10 boxes going on trip 1 while Jake here",
+  "trip 1: load 9 to 10, there by 10:40, unload together by 11:20, back at the old place at 12 right when he leave",
+  "trip 2 the other 30 boxes, it take about an hour to load by myself, so 12 to 1. sweep for 30 min, hand the keys back at 1:30, then drive over. that's 90 min of slack on the deadline",
+]
+
+[variants.l2]
+review = "needs-native-review"
+messages = [
+  "ok I am planning the moving day on saturday, already rent a van for whole day",
+  "I have 40 box and also sofa, bed and dresser. van can put about 30 box, and 3 big furniture take space same as about 20 box",
+  "so total is 60 box, need 2 full trip. drive is 40 minute each way",
+  "the hard limit: I must give back key to old landlord before 3pm, and Jake only can help until noon",
+  "I cannot lift sofa or dresser by myself, so all furniture and 10 box must go in trip 1 when Jake is here",
+  "trip 1: load from 9 to 10, arrive at 10:40, unload together until 11:20, come back to old place at 12, just when he leave",
+  "trip 2 is other 30 box, I need about one hour to load alone, so 12 to 1. sweep floor 30 minute, give back key at 1:30, then drive there. so still have 90 minute before deadline",
+]
+
+[variants.zh_formal]
+review = "needs-native-review"
+messages = [
+  "我在安排周六搬家的事，已经租好了一辆小货车，用一整天。",
+  "我有40个箱子，还有沙发、床和五斗柜。货车大概能装30个箱子，这三件大家具差不多占20个箱子的地方。",
+  "所以加起来相当于60个箱子，要满满跑两趟。单程开车40分钟。",
+  "有两个硬性限制：下午3点前必须把钥匙还给原来的房东；Jake只能帮到中午12点。",
+  "沙发和五斗柜我一个人搬不动，所以家具加10个箱子要趁Jake在，第一趟运走。",
+  "第一趟：9点到10点装车，10点40到，两个人一起卸到11点20，12点回到旧房子，正好他要走。",
+  "第二趟是剩下的30个箱子，我一个人装大概要一个小时，也就是12点到1点。再扫30分钟地，1点半交钥匙，然后开过去。离3点还富余一个半小时。",
+]
+
+[variants.zh_casual]
+review = "needs-native-review"
+messages = [
+  "周六搬家 车租好了 租一整天",
+  "40个箱子 还有沙发 床 五斗柜 车大概能装30箱 三个大件差不多占20箱的地方",
+  "加起来60箱 刚好跑两趟 单程开40分钟",
+  "死线俩：下午3点前钥匙得还给房东 Jake只能帮到12点",
+  "沙发和柜子我一个人根本搬不动[捂脸] 所以大件加10箱第一趟趁Jake在拉走",
+  "第一趟 9到10点装车 10:40到 俩人卸到11:20 12点回老房子 他正好走",
+  "第二趟就剩下30箱 我自己装大概一个钟 12到1点 扫地半小时 1点半交钥匙 然后开过去 离3点还有一个半小时 稳了哈",
+]
+
+[variants.verbose]
+review = "authored"
+messages = [
+  "Okay, so I'm currently in the process of mapping out the end-to-end logistics for moving day this Saturday, and I've secured a rental van for the full day",
+  "In terms of total inventory, we're looking at 40 boxes plus the couch, bed and dresser. The van's capacity is roughly 30 boxes, and the 3 large furniture items effectively consume the footprint of about 20 boxes",
+  "So holistically that's a total load of 60 box-equivalents, which translates to 2 full trips. The drive itself runs approximately 40 minutes each way",
+  "In terms of hard constraints: the keys need to be returned to the old landlord no later than 3pm, and Jake's availability to assist is limited to the window up until noon",
+  "Since I'm not able to lift the couch or dresser on my own, it makes sense to leverage Jake's time by allocating all of the furniture plus 10 boxes to trip 1 while he's on site",
+  "Trip 1 timeline: load from 9 to 10, arrive by 10:40, complete unloading together by 11:20, and be back at the old place at 12, which aligns precisely with his departure",
+  "Trip 2 covers the remaining 30 boxes, which should take roughly an hour to load solo, so 12 to 1. Then a 30-minute sweep, key handover at 1:30, and then the drive over. That builds in a 90-minute buffer against the deadline, which from a due diligence standpoint is a comfortable margin",
+]
+
+[variants.ai_polished]
+review = "authored"
+messages = [
+  "I'm planning my move for Saturday and have rented a van for the day.",
+  "I have 40 boxes plus a couch, a bed, and a dresser. The van holds about 30 boxes, and the three large pieces take up roughly the space of 20.",
+  "That comes to about 60 boxes' worth of cargo, so it will take two full trips. The drive is 40 minutes each way.",
+  "There are two hard constraints: the keys must be returned to my old landlord by 3 p.m., and Jake can only help until noon.",
+  "Since I can't lift the couch or dresser on my own, all of the furniture and 10 boxes need to go on the first trip while Jake is here.",
+  "Trip 1: load from 9 to 10, arrive by 10:40, unload together by 11:20, and be back at the old place at noon, just as he leaves.",
+  "Trip 2 is the remaining 30 boxes, which should take about an hour to load on my own, so from 12 to 1. After a 30-minute sweep, I'll return the keys at 1:30 and then drive over, leaving 90 minutes of slack before the deadline.",
+]

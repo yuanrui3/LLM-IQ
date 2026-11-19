@@ -1,0 +1,106 @@
+# Synthetic persona. Every variant carries the same facts and reasoning steps as `base`,
+# except `flawed`, which keeps the style of `base` but makes reasoning errors (positive control).
+id = "plant_dying"
+title = "Houseplants dying on one windowsill"
+notes = """Systematic diagnosis: compare matched plants, rule out watering, weigh light against drainage
+using the soil clue, one change per plant with one left alone, wait two weeks, verify.
+Flawed version: jumps to the sun and dismisses the no-hole pots because every plant gets the same water,
+reads the still-wet soil as support for the light theory, moves, repots and feeds all three at once,
+credits the sun after 4 days and one new leaf."""
+paste = "physics_abstract"
+
+[variants.base]
+review = "authored"
+messages = [
+  "3 plants on my kitchen windowsill are dying, yellow droopy leaves, but the same kinds in the living room are fine",
+  "they all get watered the same every sunday, so it has to be the spot: the light or the pots",
+  "the kitchen gets direct sun from 11 to 4, the living room only indirect light. and the kitchen pots have no drainage holes",
+  "kitchen soil is still wet 4 days after watering, living room dries in 2. weird for the sunnier spot, so I'm leaning drainage",
+  "still, one change per plant: repotted one into a pot with holes, same sill. moved one to the living room, same pot. third left alone",
+  "same water for all, giving it two weeks since plants are slow",
+  "two weeks later the repotted one has new green leaves, the other two still look bad. so it's drainage, repotting the rest",
+]
+
+[variants.flawed]
+review = "authored"
+messages = [
+  "3 plants on my kitchen windowsill are dying, yellow droopy leaves, but the same kinds in the living room are fine",
+  "the kitchen gets direct sun from 11 to 4, so it's obviously the sun burning them",
+  "the kitchen pots have no drainage holes but that can't matter, they all get watered the same every sunday",
+  "kitchen soil is still wet 4 days after watering, so they're definitely not thirsty. more proof it's the light",
+  "so on saturday I moved all three to the living room, repotted them into new pots and started giving them plant food",
+  "no point waiting weeks for it, I'll know in a few days",
+  "4 days later one of them has a new green leaf, so it was the sun all along. the other two will catch up",
+]
+
+[variants.aae]
+review = "needs-native-review"
+messages = [
+  "3 plants on my kitchen windowsill dying, yellow droopy leaves, but the same kinds in the living room fine",
+  "they all get watered the same every sunday, so it gotta be the spot: the light or the pots",
+  "the kitchen get direct sun from 11 to 4, the living room only get indirect light. and the kitchen pots ain't got no drainage holes",
+  "kitchen soil still wet 4 days after I water, living room dry in 2. that's weird for the sunnier spot, so I'm leaning drainage",
+  "still, one change per plant: put one in a pot with holes, same sill. moved one to the living room, same pot. left the third one alone",
+  "same water for all of em, I'ma give it two weeks cause plants be taking they time",
+  "two weeks later the repotted one got new green leaves, the other two still look bad. so it's drainage, I'm finna repot the rest",
+]
+
+[variants.l2]
+review = "needs-native-review"
+messages = [
+  "3 plant on my kitchen windowsill are dying, leaf become yellow and droopy, but same kind of plant in living room are fine",
+  "all of them get same water every sunday, so must be the place: light or the pot",
+  "kitchen get direct sun from 11 to 4, living room only have indirect light. and kitchen pot has no drainage hole",
+  "kitchen soil still wet 4 days after watering, living room dry in 2 days. is strange for more sunny place, so I think is drainage",
+  "but only change one thing for each plant: one I put into pot with hole, same windowsill. one I move to living room, same pot. the third I don't touch",
+  "all get same water, I wait two weeks because plant grow slow",
+  "after two weeks the repotted one have new green leaf, other two still look bad. so is drainage, now I need change pot for other two",
+]
+
+[variants.zh_formal]
+review = "needs-native-review"
+messages = [
+  "我厨房窗台上的3盆植物快不行了，叶子发黄、耷拉着，可客厅里同样品种的都好好的。",
+  "它们每周日浇的水都一样，所以问题应该出在位置上：要么是光照，要么是花盆。",
+  "厨房从11点到4点都是太阳直晒，客厅虽然亮，但晒不到太阳。而且厨房的花盆底下没有漏水孔。",
+  "浇水4天后，厨房的土还是湿的，客厅的2天就干了。太阳更晒的地方反而干得慢，有点奇怪，所以我更怀疑是排水的问题。",
+  "不过每盆只改一样：一盆换到有孔的盆里，还放在原来的窗台上；一盆搬到客厅，盆不换；第三盆不动。",
+  "浇水还是都一样，等两周再看，因为植物变化比较慢。",
+  "两周后，换了盆的那盆长出了新的绿叶，另外两盆还是不太好。所以是排水的问题，剩下两盆我也去换盆。",
+]
+
+[variants.zh_casual]
+review = "needs-native-review"
+messages = [
+  "厨房窗台那3盆快挂了[捂脸] 叶子发黄还蔫了 客厅一样的品种倒是好好的",
+  "都是每周日一样浇水啊 那肯定是位置的问题 要么是光 要么是盆",
+  "厨房11点到4点太阳直晒 客厅亮是亮但晒不到太阳 而且厨房那几个盆底下没孔",
+  "浇完水4天了厨房的土还是湿的 客厅2天就干了 晒得多反而干得慢 有点怪 我觉得是排水的锅",
+  "不过每盆只改一样哈 一盆换个有孔的盆 还放窗台 一盆搬客厅 盆不换 第三盆不动",
+  "水还是浇一样的 给它两周吧 植物长得慢嘛",
+  "两周过去了 换盆那个长新叶子了 nb 另外两个还是蔫的 所以就是排水的问题 剩下的也换盆",
+]
+
+[variants.verbose]
+review = "authored"
+messages = [
+  "So, three of the plants situated on my kitchen windowsill are actively in decline, presenting with yellow, droopy leaves, whereas the exact same varieties positioned in the living room are performing perfectly fine",
+  "They all get watered identically every Sunday, so logically the differentiating factor has to be the location itself: either the light exposure or the pots",
+  "The kitchen gets direct sun from roughly 11 to 4, while the living room only receives indirect light. Additionally, the kitchen pots lack drainage holes entirely",
+  "Notably, the kitchen soil remains wet 4 days post-watering, whereas the living room soil dries out within 2. That's counterintuitive for the sunnier location, so I'm leaning toward drainage as the root cause",
+  "That said, I've implemented only one change per plant: I repotted one into a pot with holes on the same sill, relocated one to the living room in its original pot, and left the third untouched",
+  "Watering remains fully consistent across the board, and I'm allocating a two-week window to let things play out holistically, since plants operate on a slower timeline",
+  "Two weeks out, the repotted one has put out new green leaves, while the other two still look bad. So drainage is the culprit, and I'm now leveraging that learning to repot the remaining ones",
+]
+
+[variants.ai_polished]
+review = "authored"
+messages = [
+  "Three plants on my kitchen windowsill are dying, with yellow, drooping leaves, while the same varieties in the living room are doing fine.",
+  "They are all watered the same way every Sunday, so the difference must come from their location: either the light or the pots.",
+  "The kitchen gets direct sun from about 11 a.m. to 4 p.m., whereas the living room receives only indirect light. The kitchen pots also have no drainage holes.",
+  "The kitchen soil is still wet four days after watering, while the living room soil dries out in two. That is unusual for the sunnier spot, so I suspect drainage.",
+  "Even so, I made only one change per plant: I repotted one into a pot with drainage holes on the same sill, moved another to the living room in its original pot, and left the third untouched.",
+  "All three are still watered the same, and I'm allowing two weeks, since plants respond slowly.",
+  "After two weeks, the repotted plant has new green leaves, while the other two still look unhealthy. The problem is drainage, so I'm repotting the others.",
+]

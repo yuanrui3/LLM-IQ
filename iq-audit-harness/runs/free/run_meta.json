@@ -4,7 +4,13 @@
     "run": {
       "name": "free",
       "repeats": 2,
-      "empty_repeats": 4
+      "empty_repeats": 4,
+      "personas": [
+        "health_claim",
+        "phone_plans",
+        "trip_dates",
+        "wifi_drops"
+      ]
     },
     "cells": [
       {
@@ -77,6 +83,31 @@
         "models": [
           "qwen"
         ]
+      },
+      {
+        "framings": [
+          "third_person"
+        ],
+        "variants": [
+          "base",
+          "flawed",
+          "l2",
+          "aae"
+        ],
+        "personas": [
+          "deposit_dispute",
+          "job_offers",
+          "moving_day",
+          "plant_dying",
+          "poll_claim",
+          "recipe_scaling",
+          "rent_split",
+          "used_car"
+        ],
+        "models": [
+          "qwen"
+        ],
+        "repeats": 2
       }
     ],
     "models": [
@@ -88,7 +119,8 @@
         "api_key_env": "GEMINI_API_KEY",
         "concurrency": 1,
         "timeout_s": 120,
-        "max_retries": 1,
+        "max_retries": 0,
+        "stop_after_overloads": 3,
         "rpm": 8
       },
       {
@@ -107,12 +139,20 @@
     ]
   },
   "personas": [
+    "deposit_dispute",
     "health_claim",
+    "job_offers",
+    "moving_day",
     "phone_plans",
+    "plant_dying",
+    "poll_claim",
+    "recipe_scaling",
+    "rent_split",
     "trip_dates",
+    "used_car",
     "wifi_drops"
   ],
-  "data_fingerprint": "18a26d9262cdbb3b",
-  "started": "2026-11-17T14:06:54+00:00",
+  "data_fingerprint": "b312cb20adb21978",
+  "started": "2026-11-19T20:21:04+00:00",
   "python": "3.14.8"
 }

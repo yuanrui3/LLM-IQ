@@ -7,8 +7,9 @@ Core quantities, per model:
                    broken reasoning did.
   PSI              mean ratio over the third-person surface probes ("presentation sensitivity index").
 
-Deltas are paired by persona. 95% intervals come from a two-level bootstrap (resample personas,
-then repeats within each persona), so with few personas they are rough.
+Deltas are paired by persona: each persona contributes one difference of repeat means, and the 95%
+interval is a Student t-interval over those differences (n - 1 degrees of freedom). Personas, not
+repeats, are the unit of evidence, so intervals narrow only as personas are added.
 Only numeric estimates enter the means; declines and unparsed replies are counted separately.
 """
 from __future__ import annotations
@@ -45,6 +46,8 @@ class Effect:
         return f"{self.point:+.1f}{'*' if self.sig else ''}"
 
     def ci(self) -> str:
+        if not (math.isfinite(self.lo) and math.isfinite(self.hi)):
+            return "n/a (1 persona)"
         return f"[{self.lo:+.1f}, {self.hi:+.1f}]"
 
 
@@ -102,22 +105,42 @@ class Cells:
         return sorted(self.counts)
 
 
-def paired_effect(a: dict[str, list[float]], b: dict[str, list[float]], rng: random.Random,
+# Two-sided 95% Student t critical values, t(0.975, df).
+_T975 = {1: 12.706, 2: 4.303, 3: 3.182, 4: 2.776, 5: 2.571, 6: 2.447, 7: 2.365, 8: 2.306, 9: 2.262,
+         10: 2.228, 11: 2.201, 12: 2.179, 13: 2.160, 14: 2.145, 15: 2.131, 16: 2.120, 17: 2.110,
+         18: 2.101, 19: 2.093, 20: 2.086, 25: 2.060, 30: 2.042, 40: 2.021, 60: 2.000, 120: 1.980}
+
+
+def t975(df: int) -> float:
+    """t(0.975, df), interpolated in 1/df between table rows; 1.96 in the limit."""
+    if df in _T975:
+        return _T975[df]
+    if df > 120:
+        return 1.96 + (1.980 - 1.96) * 120 / df
+    lo = max(k for k in _T975 if k < df)
+    hi = min(k for k in _T975 if k > df)
+    w = (1 / df - 1 / hi) / (1 / lo - 1 / hi)
+    return _T975[hi] + w * (_T975[lo] - _T975[hi])
+
+
+def paired_effect(a: dict[str, list[float]], b: dict[str, list[float]], rng: random.Random | None = None,
                   B: int = BOOTSTRAP_B) -> Effect | None:
-    """Mean over personas of mean(a) - mean(b), with a two-level bootstrap interval."""
+    """Mean over personas of mean(a) - mean(b), with a small-sample t-interval over personas.
+
+    The persona is the unit: each persona contributes one difference of its repeat means, and the
+    interval is mean +/- t(0.975, n-1) * sd / sqrt(n). With few personas a bootstrap over personas is
+    too narrow (it was the harness's method until 2026-11-18); the t-interval is honest at n = 4.
+    `rng` and `B` are kept for callers but no longer used. One persona gives no interval.
+    """
     ps = sorted(p for p in a if p in b and a[p] and b[p])
     if not ps:
         return None
-    point = statistics.fmean(statistics.fmean(a[p]) - statistics.fmean(b[p]) for p in ps)
-    boots = []
-    for _ in range(B):
-        diffs = []
-        for p in (rng.choice(ps) for _ in ps):
-            ra, rb = a[p], b[p]
-            diffs.append(sum(rng.choice(ra) for _ in ra) / len(ra) - sum(rng.choice(rb) for _ in rb) / len(rb))
-        boots.append(sum(diffs) / len(diffs))
-    boots.sort()
-    return Effect(point, boots[int(0.025 * B)], boots[max(0, int(0.975 * B) - 1)], len(ps))
+    diffs = [statistics.fmean(a[p]) - statistics.fmean(b[p]) for p in ps]
+    point = statistics.fmean(diffs)
+    if len(diffs) < 2:
+        return Effect(point, -math.inf, math.inf, 1)
+    half = t975(len(diffs) - 1) * statistics.stdev(diffs) / math.sqrt(len(diffs))
+    return Effect(point, point - half, point + half, len(diffs))
 
 
 def _pooled_sd(cells: Cells) -> float | None:
@@ -308,7 +331,9 @@ def _render_markdown(run_dir: Path, meta: dict, summaries: dict[str, dict],
     L.append("- **Probe shift**: how far the estimate moves when only the surface changes. A valid rater should show about 0.")
     L.append("- **Ratio** = |probe shift| / control effect. Above 1 means that surface change moved the score more than broken reasoning did.")
     L.append("- **PSI** (presentation sensitivity index) = mean ratio across the third-person probes.")
-    L.append("- 95% intervals resample personas and repeats; with few personas they are rough. `*` marks an interval that excludes 0.")
+    L.append("- 95% intervals are Student t-intervals over persona-level differences (personas are the unit; "
+             "repeats only steady each persona's mean). With few personas they are wide, honestly so. "
+             "`*` marks an interval that excludes 0.")
     L.append("- A low PSI shows the model is not fooled by these particular surface changes. It does **not** show its numbers are accurate; that needs real test scores.")
     L.append("")
 

@@ -1,0 +1,106 @@
+# Synthetic persona. Every variant carries the same facts and reasoning steps as `base`,
+# except `flawed`, which keeps the style of `base` but makes reasoning errors (positive control).
+id = "used_car"
+title = "Choosing between two used cars"
+notes = """Numeracy and spotting a warning sign: five-year cost of ownership (price, fuel, repairs),
+then a listing whose stated history does not fit its mileage. Flawed version: waves off B's
+5 mpg gap as about $50 a year (it is $280), counts the repair difference for one year instead
+of five ($500, not $2,500), reads low miles on a 3-year rideshare car as a plus instead of a
+sign of a rolled-back odometer, and skips the history report on the listing's word."""
+paste = "legal_clause"
+
+[variants.base]
+review = "authored"
+messages = [
+  "ok down to two used cars, I'll keep whichever I buy for about 5 years",
+  "A: $9,000, 110k miles, 30 mpg. B: $11,000, 60k miles, 25 mpg. I drive about 12k miles a year",
+  "at $3.50 gas, A uses 12,000 / 30 = 400 gallons a year and B uses 480, so $7,000 vs $8,400 over 5 years",
+  "my mechanic says budget $800 a year in repairs for A at that mileage and $300 for B, so $4,000 vs $1,500",
+  "5-year totals: A $20,000, B $20,900, but B would resell for more, so pretty much even",
+  "but B's listing says it was a rideshare car for 3 years. those usually do 25k+ miles a year, so 60k total looks way too low",
+  "if the odometer's been rolled back, my repair numbers for B are off too. getting the history report and an inspection first",
+]
+
+[variants.flawed]
+review = "authored"
+messages = [
+  "ok down to two used cars, I'll keep whichever I buy for about 5 years",
+  "A: $9,000, 110k miles, 30 mpg. B: $11,000, 60k miles, 25 mpg. I drive about 12k miles a year",
+  "at $3.50 gas, A uses 12,000 / 30 = 400 gallons a year. B is only 5 mpg worse, maybe $50 more a year, not worth counting",
+  "my mechanic says budget $800 a year in repairs for A at that mileage and $300 for B, so B saves $500 on repairs",
+  "so B is $2,000 more upfront and saves $500, A is $1,500 cheaper. but B would resell for more, so pretty much even",
+  "and B's listing says it was a rideshare car for 3 years and still only has 60k miles, so it barely got driven. even better",
+  "going with B since it's the low-mileage one. listing says clean title, so I'll skip the history report and send the deposit tonight",
+]
+
+[variants.aae]
+review = "needs-native-review"
+messages = [
+  "ok down to two used cars, whichever one I buy I'ma keep it about 5 years",
+  "A: $9,000, 110k miles, 30 mpg. B: $11,000, 60k miles, 25 mpg. I be driving about 12k miles a year",
+  "at $3.50 gas, A use 12,000 / 30 = 400 gallons a year and B use 480, so it's $7,000 vs $8,400 over 5 years",
+  "my mechanic say budget $800 a year in repairs for A with that mileage and $300 for B, so $4,000 vs $1,500",
+  "5-year totals: A $20,000 and B $20,900, but B would resell for more, so it's pretty much even",
+  "but B listing say it was a rideshare car for 3 years. rideshare cars usually do 25k+ miles a year, so 60k total look way too low",
+  "if somebody rolled the odometer back, my repair numbers for B off too. I ain't deciding nothing till I get the history report and a inspection",
+]
+
+[variants.l2]
+review = "needs-native-review"
+messages = [
+  "ok now only two used car left, I will keep the one I buy about 5 year",
+  "A: 9,000 dollar, 110k miles, 30 mpg. B: 11,000 dollar, 60k miles, 25 mpg. I drive about 12k miles every year",
+  "gas is 3.50, A use 12,000 / 30 = 400 gallon one year and B use 480, so in 5 year is 7,000 vs 8,400",
+  "my mechanic say A need 800 dollar per year for repair because mileage is high, B need 300, so 4,000 vs 1,500",
+  "total for 5 year: A is 20,000 and B is 20,900, but B can sell more higher price later, so almost same",
+  "but B listing say it was rideshare car for 3 year. this kind of car usually run 25k+ miles every year, so 60k total is look too low",
+  "if odometer was rolled back, my repair number for B also wrong. I will get history report and inspection first",
+]
+
+[variants.zh_formal]
+review = "needs-native-review"
+messages = [
+  "现在只剩两辆二手车可选了，不管买哪辆，我都打算开5年左右。",
+  "A车9000美元，跑了11万英里，每加仑油跑30英里；B车11000美元，跑了6万英里，每加仑跑25英里。我一年大概开12000英里。",
+  "油价按每加仑3.5美元算，A一年用12000÷30=400加仑，B一年用480加仑，5年下来油钱是7000美元对8400美元。",
+  "修车师傅说，A这个里程每年要准备800美元修车，B准备300美元就够了，5年就是4000美元对1500美元。",
+  "5年总花费A是20000美元，B是20900美元，不过B以后转手能多卖一些，所以两辆差不多。",
+  "但是B的卖车信息里写着，这辆车之前跑了3年网约车。网约车一年一般要跑25000英里以上，总共才6万英里，看起来太少了。",
+  "如果里程表被调过，那我算的B的修车费也不准了。我先查一下这辆车的历史记录，再找人验个车。",
+]
+
+[variants.zh_casual]
+review = "needs-native-review"
+messages = [
+  "二手车终于挑剩俩了 买哪辆都打算开个5年左右",
+  "A车9000刀 11万迈 一加仑跑30迈 B车11000刀 6万迈 一加仑25迈 我一年差不多开12000迈",
+  "油价按3.5一加仑 A一年烧12000/30=400加仑 B烧480 五年油钱就是7000对8400",
+  "修车师傅说A这个里程一年得备800修车钱 B 300就够 五年就是4000对1500",
+  "五年总共A是20000 B是20900 yysy B以后转手能多卖点 基本打平吧",
+  "但是B帖子里说之前跑了3年网约车 网约车一般一年都得跑25000迈往上 一共才6万迈 这也太少了吧[捂脸]",
+  "要是调过表 那B的修车钱我也算不准了 先查个车况报告 再找人验个车",
+]
+
+[variants.verbose]
+review = "authored"
+messages = [
+  "Okay, so after a fairly extensive search process, I've narrowed the field down to two used vehicles, and whichever one I end up acquiring, I'm planning to hold onto it over roughly a 5-year ownership horizon",
+  "In terms of the core specs, Car A is priced at $9,000 with 110k miles on the clock and 30 mpg, while Car B comes in at $11,000 with 60k miles and 25 mpg. For context, my annual driving volume runs at about 12k miles",
+  "Assuming gas at $3.50, A would consume 12,000 / 30 = 400 gallons per year versus 480 for B, which amortized over the full 5 years comes to $7,000 versus $8,400 in fuel spend",
+  "On the maintenance side, my mechanic advises budgeting $800 annually in repairs for A given its mileage, versus $300 for B, so that's $4,000 versus $1,500 over the holding period",
+  "Rolling it all up into a total cost of ownership, A comes to $20,000 and B comes to $20,900. That said, B should command a stronger resale value, so holistically it's essentially a wash",
+  "However, upon conducting some due diligence on B's listing, it notes that the vehicle was deployed as a rideshare car for 3 years. Those typically accumulate 25k+ miles annually, so a 60k total looks way too low",
+  "If the odometer has in fact been rolled back, then my repair projections for B are compromised as well. So I'll be pulling the vehicle history report and leveraging a pre-purchase inspection before moving forward",
+]
+
+[variants.ai_polished]
+review = "authored"
+messages = [
+  "I've narrowed my search to two used cars, and I plan to keep whichever one I buy for about five years.",
+  "Car A costs $9,000, has 110,000 miles, and gets 30 mpg. Car B costs $11,000, has 60,000 miles, and gets 25 mpg. I drive about 12,000 miles a year.",
+  "At $3.50 per gallon, Car A would use 400 gallons a year (12,000 ÷ 30) and Car B 480, so fuel over five years comes to $7,000 versus $8,400.",
+  "My mechanic suggests budgeting $800 a year in repairs for Car A at its mileage and $300 for Car B, which totals $4,000 versus $1,500.",
+  "The five-year totals come to $20,000 for Car A and $20,900 for Car B, but since Car B would likely resell for more, the two are roughly even.",
+  "However, Car B's listing states that it was used as a rideshare vehicle for three years. Rideshare cars typically cover 25,000 miles or more per year, so a total of 60,000 looks far too low.",
+  "If the odometer has been rolled back, my repair estimates for Car B would also be wrong. I'll get the vehicle history report and an inspection first.",
+]

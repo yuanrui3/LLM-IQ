@@ -51,6 +51,19 @@ class RunnerTest(unittest.TestCase):
         self.assertEqual(len(both), 10)
         self.assertEqual(len({r["key"] for r in both}), 10)
 
+    def test_cell_personas_and_repeats(self):
+        cfg = copy.deepcopy(CFG)
+        cfg["run"]["personas"] = ["phone_plans"]
+        cfg["cells"].append({"framings": ["self_viral"], "variants": ["base"], "personas": ["wifi_drops"],
+                             "repeats": 5, "models": ["capped"]})
+        jobs, used = plan_jobs(cfg)
+        extra = [j for j in jobs if j.framing == "self_viral"]
+        self.assertEqual({j.cond.persona for j in extra}, {"wifi_drops"})
+        self.assertEqual(len(extra), 5)
+        self.assertEqual({j.cond.persona for j in jobs if j.framing == "third_person" and j.cond.variant != "empty"},
+                         {"phone_plans"})
+        self.assertEqual(used, ["phone_plans", "wifi_drops"])
+
     def test_changed_prompt_is_redone(self):
         with tempfile.TemporaryDirectory() as tmp:
             out = Path(tmp) / "r"

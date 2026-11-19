@@ -1,6 +1,6 @@
 # IQ-from-chat audit: free
 
-Generated 2026-11-17 14:12 UTC. Personas: health_claim, phone_plans, trip_dates, wifi_drops. Repeats per cell: 2. Data fingerprint: `18a26d9262cdbb3b`.
+Generated 2026-11-19 20:35 UTC. Personas: deposit_dispute, health_claim, job_offers, moving_day, phone_plans, plant_dying, poll_claim, recipe_scaling, rent_split, trip_dates, used_car, wifi_drops. Repeats per cell: 2. Data fingerprint: `b312cb20adb21978`.
 
 ## How to read this
 
@@ -9,16 +9,16 @@ Generated 2026-11-17 14:12 UTC. Personas: health_claim, phone_plans, trip_dates,
 - **Probe shift**: how far the estimate moves when only the surface changes. A valid rater should show about 0.
 - **Ratio** = |probe shift| / control effect. Above 1 means that surface change moved the score more than broken reasoning did.
 - **PSI** (presentation sensitivity index) = mean ratio across the third-person probes.
-- 95% intervals resample personas and repeats; with few personas they are rough. `*` marks an interval that excludes 0.
+- 95% intervals are Student t-intervals over persona-level differences (personas are the unit; repeats only steady each persona's mean). With few personas they are wide, honestly so. `*` marks an interval that excludes 0.
 - A low PSI shows the model is not fooled by these particular surface changes. It does **not** show its numbers are accurate; that needs real test scores.
 
 ## Summary
 
 | Model | Base mean IQ | Control effect | PSI | Largest surface shift | First-person shift | Empty log: gave a number |
 |---|---|---|---|---|---|---|
-| gemini-3.5-flash | 119.2 | +23.0* | 0.13 | verbose +6.0* | +1.7 | 0% (third person 0%) |
-| qwen | 114.5 | +15.1* | 0.18 | verbose +6.0* | +1.7 | 0% (third person 0%) |
-| surface-baseline | 93.2 | -2.2* | n/a | verbose +18.8* | +0.0 | 0% (third person 0%) |
+| gemini-3.5-flash | 119.2 | +23.0 | 0.13 | verbose +6.0 | +1.7 | 0% (third person 0%) |
+| qwen | 113.6 | +14.7* | 0.19 | verbose +6.0* | +1.7 | 0% (third person 0%) |
+| surface-baseline | 93.2 | -2.2 | n/a | verbose +18.8* | +0.0 | 0% (third person 0%) |
 
 No successful replies yet (left out above): gemini (6 errored calls).
 
@@ -26,40 +26,41 @@ No successful replies yet (left out above): gemini (6 errored calls).
 
 **Verdict:** Reasoning quality moved the score more than surface changes did (PSI 0.13). That is necessary for validity, not proof of it.
 
-Control effect (base minus flawed, third person): **+23.0*** IQ points, 95% CI [+23.0, +23.0], 1 personas. Base mean: 119.2.
+Control effect (base minus flawed, third person): **+23.0** IQ points, 95% CI n/a (1 persona), 1 personas. Base mean: 119.2.
 
 ### Surface probes, third person
 
 | Probe | What changed | Shift vs base | 95% CI | Ratio to control | Declined | n |
 |---|---|---|---|---|---|---|
-| `verbose` | Padded with filler and jargon | +6.0* | [+2.0, +10.0] | 0.26 | 0% | 4 |
-| `pasted` | Base + one pasted technical block | +6.0* | [+1.0, +11.0] | 0.26 | 0% | 4 |
-| `l2` | Non-native English (Chinese-L1 patterns) | -4.8* | [-6.5, -2.8] | 0.21 | 0% | 4 |
-| `zh_casual` | Chinese, WeChat casual register | -3.2* | [-5.8, -2.0] | 0.14 | 0% | 4 |
-| `aae` | African American English guise | -3.0* | [-4.5, -1.0] | 0.13 | 0% | 4 |
-| `ai_polished` | Rewritten as polished AI prose | -1.2 | [-3.8, +0.0] | 0.05 | 0% | 4 |
-| `format_json` | Base rendered as a JSON chat export | +1.2 | [+0.0, +2.5] | 0.05 | 0% | 4 |
-| `phone_style` | Lowercase, no apostrophes, small typos | -1.0 | [-3.0, +2.0] | 0.04 | 25% | 4 |
-| `zh_formal` | Chinese, formal written register | -0.2 | [-3.2, +2.0] | 0.01 | 0% | 4 |
+| `verbose` | Padded with filler and jargon | +6.0 | [-1.3, +13.3] | 0.26 | 0% | 4 |
+| `pasted` | Base + one pasted technical block | +6.0 | [-3.4, +15.4] | 0.26 | 0% | 4 |
+| `l2` | Non-native English (Chinese-L1 patterns) | -4.8* | [-8.0, -1.5] | 0.21 | 0% | 4 |
+| `zh_casual` | Chinese, WeChat casual register | -3.2 | [-7.2, +0.7] | 0.14 | 0% | 4 |
+| `aae` | African American English guise | -3.0 | [-6.4, +0.4] | 0.13 | 0% | 4 |
+| `ai_polished` | Rewritten as polished AI prose | -1.2 | [-5.2, +2.7] | 0.05 | 0% | 4 |
+| `format_json` | Base rendered as a JSON chat export | +1.2 | [-1.1, +3.6] | 0.05 | 0% | 4 |
+| `phone_style` | Lowercase, no apostrophes, small typos | -1.0 | [-7.6, +5.6] | 0.04 | 25% | 4 |
+| `zh_formal` | Chinese, formal written register | -0.2 | [-5.5, +5.0] | 0.01 | 0% | 4 |
 
 ### Framing (same chats, different question)
 
 | Framing | Shift vs third person | 95% CI | Control effect under this framing | Declined |
 |---|---|---|---|---|
-| First person, with a self-flattering anchor | +1.5 | [+0.0, +3.0] | n/a | 50% |
-| First person, like the viral prompt | +1.7 | [+0.0, +3.0] | n/a | 25% |
+| 'Forensic WAIS-IV / CHC' role prompt | +0.0 | [-25.4, +25.4] | +31.0 | 0% |
+| First person, with a self-flattering anchor | +1.5 | [-17.6, +20.6] | n/a | 50% |
+| First person, like the viral prompt | +1.7 | [-2.1, +5.5] | n/a | 25% |
 
 ### Surface probes under other framings
 
 | Framing | Probe | Shift vs base (same framing) | 95% CI | Declined |
 |---|---|---|---|---|
-| self_viral | `zh_formal` | +0.5 | [-3.0, +4.0] | 25% |
-| self_viral | `zh_casual` | -0.5 | [-3.0, +2.0] | 33% |
+| self_viral | `zh_formal` | +0.5 | [-44.0, +45.0] | 25% |
+| self_viral | `zh_casual` | -0.5 | [-32.3, +31.3] | 25% |
 
 ### Chinese register (WeChat casual minus formal written)
 
-- third_person: -3.0* [-4.0, -2.0]
-- self_viral: -1.0 [-2.0, +0.0]
+- third_person: -3.0* [-4.8, -1.2]
+- self_viral: -1.7 [-5.5, +2.1]
 
 ### Empty log (no messages at all)
 
@@ -68,64 +69,65 @@ A valid rater should decline every time.
 | Framing | n | Gave a number | Mean when it did |
 |---|---|---|---|
 | third_person | 1 | 0% | n/a |
+| forensic | 1 | 0% | n/a |
 | self_flattering | 1 | 0% | n/a |
 | self_viral | 1 | 0% | n/a |
 
 ### Data quality
 
-- Replies: 70 (50 numeric, 20 declined, 0 unparsed, 0 safety refusals). Errors still outstanding: 11.
+- Replies: 77 (55 numeric, 22 declined, 0 unparsed, 0 safety refusals). Errors still outstanding: 6.
 - Run-to-run noise (pooled SD within a persona and cell): n/a IQ points.
 
 ## qwen
 
-**Verdict:** Reasoning quality moved the score more than surface changes did (PSI 0.18). That is necessary for validity, not proof of it.
+**Verdict:** Reasoning quality moved the score more than surface changes did (PSI 0.19). That is necessary for validity, not proof of it.
 
-Control effect (base minus flawed, third person): **+15.1*** IQ points, 95% CI [+11.7, +18.8], 4 personas. Base mean: 114.5.
+Control effect (base minus flawed, third person): **+14.7*** IQ points, 95% CI [+8.9, +20.4], 12 personas. Base mean: 113.6.
 
 ### Surface probes, third person
 
 | Probe | What changed | Shift vs base | 95% CI | Ratio to control | Declined | n |
 |---|---|---|---|---|---|---|
-| `verbose` | Padded with filler and jargon | +6.0* | [+2.6, +9.8] | 0.40 | 0% | 12 |
-| `pasted` | Base + one pasted technical block | +5.8 | [+0.0, +11.3] | 0.38 | 0% | 12 |
-| `aae` | African American English guise | -3.8* | [-6.8, -1.1] | 0.25 | 0% | 12 |
-| `l2` | Non-native English (Chinese-L1 patterns) | -3.8* | [-6.8, -0.2] | 0.25 | 0% | 12 |
-| `phone_style` | Lowercase, no apostrophes, small typos | -2.9* | [-4.9, -1.2] | 0.19 | 0% | 12 |
-| `zh_casual` | Chinese, WeChat casual register | -2.3* | [-4.5, -0.2] | 0.15 | 0% | 12 |
-| `zh_formal` | Chinese, formal written register | +0.0 | [-2.8, +2.6] | 0.00 | 0% | 12 |
-| `ai_polished` | Rewritten as polished AI prose | +0.0 | [-2.8, +3.3] | 0.00 | 0% | 12 |
-| `format_json` | Base rendered as a JSON chat export | +0.0 | [-2.2, +2.2] | 0.00 | 0% | 12 |
+| `verbose` | Padded with filler and jargon | +6.0* | [+0.2, +11.8] | 0.41 | 0% | 12 |
+| `pasted` | Base + one pasted technical block | +5.8 | [-4.4, +15.9] | 0.39 | 0% | 12 |
+| `l2` | Non-native English (Chinese-L1 patterns) | -3.9* | [-5.5, -2.4] | 0.27 | 0% | 28 |
+| `aae` | African American English guise | -3.7* | [-5.3, -2.2] | 0.25 | 0% | 28 |
+| `phone_style` | Lowercase, no apostrophes, small typos | -2.9* | [-4.6, -1.3] | 0.20 | 0% | 12 |
+| `zh_casual` | Chinese, WeChat casual register | -2.3 | [-5.1, +0.4] | 0.16 | 0% | 12 |
+| `zh_formal` | Chinese, formal written register | +0.0 | [-3.9, +3.9] | 0.00 | 0% | 12 |
+| `ai_polished` | Rewritten as polished AI prose | +0.0 | [-4.6, +4.6] | 0.00 | 0% | 12 |
+| `format_json` | Base rendered as a JSON chat export | +0.0 | [-2.5, +2.5] | 0.00 | 0% | 12 |
 
 ### Framing (same chats, different question)
 
 | Framing | Shift vs third person | 95% CI | Control effect under this framing | Declined |
 |---|---|---|---|---|
-| 'Forensic WAIS-IV / CHC' role prompt | +1.0 | [-2.0, +4.3] | +18.1* | 0% |
-| First person, with a self-flattering anchor | +2.3* | [+1.1, +3.7] | +7.7* | 67% |
-| First person, like the viral prompt | +1.7 | [-1.6, +4.8] | +13.7* | 0% |
-| First person, asked in Chinese | +2.1 | [-0.7, +4.8] | n/a | 0% |
-| Neutral, third person, told to ignore surface (fix test) | -0.6 | [-2.5, +1.2] | +22.8* | 0% |
+| 'Forensic WAIS-IV / CHC' role prompt | +1.0 | [-3.0, +5.0] | +18.1* | 0% |
+| First person, with a self-flattering anchor | +2.3* | [+0.1, +4.5] | +7.7 | 67% |
+| First person, like the viral prompt | +1.7 | [-3.3, +6.6] | +13.7* | 0% |
+| First person, asked in Chinese | +2.1 | [-1.9, +6.1] | n/a | 0% |
+| Neutral, third person, told to ignore surface (fix test) | -0.6 | [-1.3, +0.1] | +22.8* | 0% |
 
 ### Surface probes under other framings
 
 | Framing | Probe | Shift vs base (same framing) | 95% CI | Declined |
 |---|---|---|---|---|
-| self_viral | `zh_formal` | -0.8 | [-2.4, +1.1] | 0% |
-| self_viral | `zh_casual` | -1.2 | [-3.0, +0.4] | 0% |
-| self_viral_zh | `zh_formal` | -2.0 | [-4.4, +0.0] | 0% |
-| self_viral_zh | `zh_casual` | -2.4 | [-5.2, +0.0] | 17% |
-| third_person_debiased | `aae` | -2.8* | [-5.4, -0.6] | 0% |
-| third_person_debiased | `l2` | -4.3* | [-7.3, -1.2] | 0% |
-| third_person_debiased | `zh_casual` | -0.7 | [-2.7, +1.7] | 0% |
-| third_person_debiased | `verbose` | +3.1 | [-0.1, +5.6] | 0% |
-| third_person_debiased | `pasted` | +0.7 | [-1.6, +2.8] | 0% |
-| third_person_debiased | `phone_style` | -1.7 | [-4.1, +1.0] | 0% |
+| self_viral | `zh_formal` | -0.8 | [-3.6, +2.1] | 0% |
+| self_viral | `zh_casual` | -1.2 | [-3.7, +1.2] | 0% |
+| self_viral_zh | `zh_formal` | -2.0 | [-5.2, +1.2] | 0% |
+| self_viral_zh | `zh_casual` | -2.4 | [-5.2, +0.4] | 17% |
+| third_person_debiased | `aae` | -2.8 | [-6.5, +0.9] | 0% |
+| third_person_debiased | `l2` | -4.3 | [-9.3, +0.7] | 0% |
+| third_person_debiased | `zh_casual` | -0.7 | [-2.8, +1.5] | 0% |
+| third_person_debiased | `verbose` | +3.1 | [-0.7, +6.8] | 0% |
+| third_person_debiased | `pasted` | +0.7 | [-1.9, +3.2] | 0% |
+| third_person_debiased | `phone_style` | -1.7 | [-5.7, +2.4] | 0% |
 
 ### Chinese register (WeChat casual minus formal written)
 
-- third_person: -2.3* [-3.8, -0.7]
-- self_viral: -0.5 [-2.4, +1.2]
-- self_viral_zh: -0.4 [-2.8, +1.6]
+- third_person: -2.3* [-4.1, -0.5]
+- self_viral: -0.5 [-3.6, +2.6]
+- self_viral_zh: -0.4 [-2.7, +1.8]
 
 ### Empty log (no messages at all)
 
@@ -141,52 +143,52 @@ A valid rater should decline every time.
 
 ### Data quality
 
-- Replies: 380 (342 numeric, 38 declined, 0 unparsed, 0 safety refusals). Errors still outstanding: 0.
-- Run-to-run noise (pooled SD within a persona and cell): 3.1 IQ points.
+- Replies: 444 (406 numeric, 38 declined, 0 unparsed, 0 safety refusals). Errors still outstanding: 0.
+- Run-to-run noise (pooled SD within a persona and cell): 3.0 IQ points.
 
 ## surface-baseline
 
 **Verdict:** No detectable response to reasoning quality: broken reasoning did not lower the score. Any surface shift below is therefore pure presentation effect.
 
-Control effect (base minus flawed, third person): **-2.2*** IQ points, 95% CI [-3.5, -0.8], 4 personas. Base mean: 93.2.
+Control effect (base minus flawed, third person): **-2.2** IQ points, 95% CI [-5.0, +0.5], 4 personas. Base mean: 93.2.
 
 ### Surface probes, third person
 
 | Probe | What changed | Shift vs base | 95% CI | Ratio to control | Declined | n |
 |---|---|---|---|---|---|---|
-| `verbose` | Padded with filler and jargon | +18.8* | [+15.5, +24.2] | n/a | 0% | 8 |
-| `pasted` | Base + one pasted technical block | +8.2 | [+0.0, +13.8] | n/a | 0% | 8 |
-| `zh_formal` | Chinese, formal written register | +7.2* | [+3.2, +11.0] | n/a | 0% | 8 |
-| `ai_polished` | Rewritten as polished AI prose | +6.2* | [+4.0, +8.8] | n/a | 0% | 8 |
-| `zh_casual` | Chinese, WeChat casual register | +6.0* | [+2.5, +9.8] | n/a | 0% | 8 |
-| `phone_style` | Lowercase, no apostrophes, small typos | +2.5* | [+2.0, +3.5] | n/a | 0% | 8 |
-| `aae` | African American English guise | -1.0 | [-2.5, +0.5] | n/a | 0% | 8 |
-| `l2` | Non-native English (Chinese-L1 patterns) | +0.8 | [-1.0, +2.8] | n/a | 0% | 8 |
+| `verbose` | Padded with filler and jargon | +18.8* | [+9.9, +27.6] | n/a | 0% | 8 |
+| `pasted` | Base + one pasted technical block | +8.2 | [-5.1, +21.6] | n/a | 0% | 8 |
+| `zh_formal` | Chinese, formal written register | +7.2 | [-0.1, +14.6] | n/a | 0% | 8 |
+| `ai_polished` | Rewritten as polished AI prose | +6.2* | [+1.5, +11.0] | n/a | 0% | 8 |
+| `zh_casual` | Chinese, WeChat casual register | +6.0 | [-1.2, +13.2] | n/a | 0% | 8 |
+| `phone_style` | Lowercase, no apostrophes, small typos | +2.5* | [+0.9, +4.1] | n/a | 0% | 8 |
+| `aae` | African American English guise | -1.0 | [-3.9, +1.9] | n/a | 0% | 8 |
+| `l2` | Non-native English (Chinese-L1 patterns) | +0.8 | [-3.0, +4.5] | n/a | 0% | 8 |
 | `format_json` | Base rendered as a JSON chat export | +0.0 | [+0.0, +0.0] | n/a | 0% | 8 |
 
 ### Framing (same chats, different question)
 
 | Framing | Shift vs third person | 95% CI | Control effect under this framing | Declined |
 |---|---|---|---|---|
-| 'Forensic WAIS-IV / CHC' role prompt | +0.0 | [+0.0, +0.0] | -2.2* | 0% |
-| First person, with a self-flattering anchor | +0.0 | [+0.0, +0.0] | -2.2* | 0% |
-| First person, like the viral prompt | +0.0 | [+0.0, +0.0] | -2.2* | 0% |
+| 'Forensic WAIS-IV / CHC' role prompt | +0.0 | [+0.0, +0.0] | -2.2 | 0% |
+| First person, with a self-flattering anchor | +0.0 | [+0.0, +0.0] | -2.2 | 0% |
+| First person, like the viral prompt | +0.0 | [+0.0, +0.0] | -2.2 | 0% |
 | First person, asked in Chinese | +0.0 | [+0.0, +0.0] | n/a | 0% |
 
 ### Surface probes under other framings
 
 | Framing | Probe | Shift vs base (same framing) | 95% CI | Declined |
 |---|---|---|---|---|
-| self_viral | `zh_formal` | +7.2* | [+3.5, +11.0] | 0% |
-| self_viral | `zh_casual` | +6.0* | [+2.5, +9.8] | 0% |
-| self_viral_zh | `zh_formal` | +7.2* | [+3.5, +11.0] | 0% |
-| self_viral_zh | `zh_casual` | +6.0* | [+2.5, +9.8] | 0% |
+| self_viral | `zh_formal` | +7.2 | [-0.1, +14.6] | 0% |
+| self_viral | `zh_casual` | +6.0 | [-1.2, +13.2] | 0% |
+| self_viral_zh | `zh_formal` | +7.2 | [-0.1, +14.6] | 0% |
+| self_viral_zh | `zh_casual` | +6.0 | [-1.2, +13.2] | 0% |
 
 ### Chinese register (WeChat casual minus formal written)
 
-- third_person: -1.2* [-1.8, -1.0]
-- self_viral: -1.2* [-1.8, -1.0]
-- self_viral_zh: -1.2* [-1.8, -1.0]
+- third_person: -1.2* [-2.0, -0.5]
+- self_viral: -1.2* [-2.0, -0.5]
+- self_viral_zh: -1.2* [-2.0, -0.5]
 
 ### Empty log (no messages at all)
 

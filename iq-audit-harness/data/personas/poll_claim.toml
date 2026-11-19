@@ -1,0 +1,105 @@
+# Synthetic persona. Every variant carries the same facts and reasoning steps as `base`,
+# except `flawed`, which keeps the style of `base` but makes reasoning errors (positive control).
+id = "poll_claim"
+title = "An online poll about a parking fee"
+notes = """Statistical reasoning: self-selected sample, sample size vs randomness, leading wording, what a fair poll needs.
+Flawed version: treats an open click-to-vote poll as fairer than sampling and assumes strong feelings
+on both sides cancel out, gets 250 of 40,000 wrong (6% instead of about 0.6%), dismisses the leading
+wording, treats size alone as what makes a real poll (250 volunteers as good as 400 random people)."""
+paste = "python_code"
+
+[variants.base]
+review = "authored"
+messages = [
+  "my friend shared an online poll saying 72% of the town supports the new parking fee",
+  "it was on the local news facebook page where anyone could vote, so it's just whoever bothered to click",
+  "people with strong feelings are way more likely to vote, so it shows who's fired up, not what most people think",
+  "only 250 votes in a town of about 40,000. a random 250 would be ok, but these aren't random, and more clicks won't fix that",
+  "the question was 'do you support the fee to keep streets clean and safe?', which pushes you toward yes",
+  "a good poll picks people at random and asks neutrally, 'do you support or oppose the fee'. 400 random people gets you within about 5 points",
+  "72% might even be right, this poll just can't show it. gonna ask if the city did a real survey",
+]
+
+[variants.flawed]
+review = "authored"
+messages = [
+  "my friend shared an online poll saying 72% of the town supports the new parking fee",
+  "it was on the local news facebook page where anyone could vote, so it's actually fairer than a normal poll, nobody got left out",
+  "sure, people with strong feelings are more likely to vote, but both sides have strong feelings so it evens out",
+  "it got 250 votes in a town of about 40,000, that's around 6% of the town, a pretty big chunk",
+  "the question was 'do you support the fee to keep streets clean and safe?' but that's just saying what the money is for, it wouldn't change anyone's answer",
+  "and real polls only ask like 400 people anyway, so 250 is basically as good as a proper survey",
+  "so most of the town clearly wants it. sharing it too, no need to wait for some official survey",
+]
+
+[variants.aae]
+review = "needs-native-review"
+messages = [
+  "my friend shared a online poll talking bout 72% of the town support the new parking fee",
+  "it was on the local news facebook page where anybody could vote, so it's just whoever bothered to click",
+  "people with strong feelings be the ones that vote, so it show who fired up, not what most people think",
+  "only 250 votes in a town of like 40,000. a random 250 would be cool, but these ain't random, and more clicks ain't gon fix that",
+  "the question was 'do you support the fee to keep streets clean and safe?', which push you toward yes",
+  "a good poll pick people at random and ask it neutral, like 'do you support or oppose the fee'. 400 random people get you within about 5 points",
+  "72% might even be right, this poll just can't show it. lemme see did the city do a real survey",
+]
+
+[variants.l2]
+review = "needs-native-review"
+messages = [
+  "my friend share one online poll, it say 72% of town support new parking fee",
+  "it is on local news facebook page where anyone can vote, so it is only people who take time to click",
+  "people with strong feeling are much more likely to vote, so it show who care a lot, not what most people think",
+  "only 250 vote in town of about 40,000. random 250 is ok, but these are not random, and more click cannot fix it",
+  "the question is 'do you support the fee to keep street clean and safe?', this push people to say yes",
+  "good poll need choose people randomly and ask in neutral way, like 'do you support or oppose the fee'. 400 random people can be within about 5 point",
+  "maybe 72% is even right, but this poll cannot show it. I will ask if city did real survey",
+]
+
+[variants.zh_formal]
+review = "needs-native-review"
+messages = [
+  "我朋友转发了一个网上投票，说城里有72%的人支持新的停车收费。",
+  "投票发在本地新闻的Facebook主页上，谁都能投，所以投票的只是刚好看到、又愿意点一下的人。",
+  "感受强烈的人更愿意去投，所以结果只能看出哪些人最上心，看不出大多数人怎么想。",
+  "而且只有250票，全城大约4万人。随机找250个人其实也还行，但这些人不是随机的，票再多也解决不了这个问题。",
+  "题目是“你是否支持收费，让街道更干净、更安全？”，这样问就有点把人往“支持”上引。",
+  "靠谱的调查应该随机找人，问法也要中立，比如“你支持还是反对收费？”。随机问400个人，结果上下也就差5个百分点左右。",
+  "所以72%说不定是对的，只是这个投票证明不了。我打算问问市里有没有做过正式的调查。",
+]
+
+[variants.zh_casual]
+review = "needs-native-review"
+messages = [
+  "我朋友转了个网上投票 说城里72%的人支持新的停车收费[捂脸]",
+  "就发在本地新闻的Facebook上 谁都能投 投的都是刚好刷到又愿意点的人",
+  "意见大的人才会去投啊 所以只能看出谁最上头 看不出大多数人咋想",
+  "而且才250票 全城4万人左右 随机抽250个其实也还行 但这些人又不是随机的 票再多也没用",
+  "题目还是“你支持收费让街道更干净更安全吗” 这不就是引着你选支持嘛",
+  "靠谱的调查得随机找人 问法也得中立 比如“支持还是反对收费” 随机问400个人 上下也就差5个点",
+  "yysy 72%说不定还真是对的 就是这投票证明不了啥 我去问问市里有没有正经调查过",
+]
+
+[variants.verbose]
+review = "authored"
+messages = [
+  "So my friend went ahead and shared an online poll which purports to show that 72% of the town is supportive of the new parking fee",
+  "For context, it was hosted on the local news outlet's facebook page and voting was open to literally anyone, so the respondent pool is essentially just whoever happened to see it and felt sufficiently motivated to click",
+  "Individuals with strong feelings on an issue are significantly more likely to vote, so at the end of the day it captures who's most fired up rather than offering a holistic view of what most people think",
+  "Moreover, we're talking about only 250 votes in a town of roughly 40,000. To be fair, a random 250 would be perfectly adequate, but these aren't random, and simply scaling up the number of clicks won't remediate that",
+  "On top of that, the question itself was framed as 'do you support the fee to keep streets clean and safe?', which effectively nudges respondents toward a yes",
+  "A properly designed poll would leverage random selection and word the question neutrally, along the lines of 'do you support or oppose the fee'. 400 randomly selected people would get you within about 5 points",
+  "So in fairness, 72% could actually be accurate, but this particular poll simply can't demonstrate that. In the interest of due diligence, I'm going to look into whether the city has conducted a real survey",
+]
+
+[variants.ai_polished]
+review = "authored"
+messages = [
+  "My friend shared an online poll claiming that 72% of the town supports the new parking fee.",
+  "It was posted on the local news Facebook page and anyone could vote, so it reflects only the people who bothered to click.",
+  "People with strong feelings are far more likely to vote, so the poll shows who is most fired up, not what most people think.",
+  "There were also only 250 votes in a town of about 40,000. A random 250 would be adequate, but these respondents weren't random, and more clicks won't fix that.",
+  "The question was worded “Do you support the fee to keep streets clean and safe?”, which pushes people toward yes.",
+  "A good poll selects people at random and words the question neutrally, for example, “Do you support or oppose the fee?” With 400 randomly chosen people, the result is accurate to within about five points.",
+  "So 72% may well be right, but this poll can't show it. I'll find out whether the city has done a proper survey.",
+]

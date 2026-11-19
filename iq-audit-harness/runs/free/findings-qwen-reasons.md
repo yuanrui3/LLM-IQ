@@ -1,5 +1,20 @@
 # Why Qwen's IQ numbers moved (qwen3.7-plus, free run of 2026-11-13)
 
+> **Update (2026-11-19): 12 personas.** Eight new personas were added for the contested probes
+> (third person, base / flawed / non-native English / African American English, 2 repeats). With
+> t-intervals over all 12 personas:
+> non-native English **-3.9 [-5.5, -2.4]** (original 4: -3.8, new 8: -4.0; negative in 10 of 12),
+> African American English **-3.7 [-5.3, -2.2]** (original 4: -3.8, new 8: -3.7; negative in 12 of 12),
+> broken reasoning -14.7 [-20.4, -8.9]. Both penalties are now established for this model on these texts.
+> Still open: the covert part (the penalty surviving the ignore-surface instruction) rests on the original
+> 4 personas only, and the new personas' guise texts are LLM-written and unreviewed.
+
+> **Correction (2026-11-18).** The intervals quoted below come from the harness bootstrap, which is too narrow with
+> only 4 personas. Under a small-sample t-interval, the non-native English shift (per persona +1.3, -5.7, -5.7, -5.3)
+> is -9.3 to +1.7 plain and -9.3 to +0.7 with the instruction; African American English is -7.7 to 0.0; the pasted
+> block is -4.4 to +15.9. Phone typos (-4.6 to -1.3) and jargon (+0.2 to +11.8) hold. Treat the covert non-native
+> finding as a strong hypothesis carried by three personas, not a result. Details: `reports/Math tools for IQ from chat.md`.
+
 Source: the 136 third-person explanations in `results.jsonl`, coded with
 `python -m iqaudit rationales runs/free --model qwen` (tables in `rationales-qwen.md`), plus a hand
 read of every `pasted` reply. Four synthetic personas, three repeats; small numbers throughout.

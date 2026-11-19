@@ -23,6 +23,9 @@
 name = "free"
 repeats = 2
 empty_repeats = 4
+# Pinned to the original four personas so new persona files don't silently enlarge every cell
+# (and the daily Gemini run). Cells below can name other personas explicitly.
+personas = ["health_claim", "phone_plans", "trip_dates", "wifi_drops"]
 
 [[cells]]
 framings = ["third_person"]
@@ -47,6 +50,16 @@ variants = ["base", "zh_formal", "zh_casual", "empty"]
 framings = ["third_person_debiased"]
 variants = ["base", "flawed", "aae", "l2", "verbose", "pasted", "phone_style", "zh_casual"]
 models = ["qwen"]
+
+# 12-persona expansion (2026-11-19): the contested probes on 8 new personas, Qwen only, 2 repeats,
+# sized to the ~199k free Qwen tokens left. With the original 4 this gives 12 personas for these cells.
+[[cells]]
+framings = ["third_person"]
+variants = ["base", "flawed", "l2", "aae"]
+personas = ["deposit_dispute", "job_offers", "moving_day", "plant_dying",
+            "poll_claim", "recipe_scaling", "rent_split", "used_car"]
+models = ["qwen"]
+repeats = 2
 
 [[models]]
 name = "gemini-3.5-flash"

@@ -48,22 +48,33 @@ def load_config(path: Path) -> dict:
     return cfg
 
 
-def plan_conditions(cfg: dict, data_dir: Path = DATA_DIR) -> tuple[list[tuple[Condition, str, set | None]], list[str]]:
-    """Unique (condition, framing) pairs, each with the set of models allowed to run it (None = all).
+def _persona_ids(wanted, personas: dict, where: str) -> list[str]:
+    ids = sorted(personas) if wanted in (None, "all") else list(wanted)
+    for pid in ids:
+        if pid not in personas:
+            raise KeyError(f"{where}: persona {pid!r} not found; available: {sorted(personas)}")
+    return ids
 
-    A [[cells]] block may carry `models = [...]` to limit it to those model names.
+
+def plan_conditions(cfg: dict, data_dir: Path = DATA_DIR) -> tuple[list[tuple[Condition, str, list]], list[str]]:
+    """Unique (condition, framing) pairs, each with the rules that ask for it.
+
+    A [[cells]] block may also carry:
+      models   = [...]  only these model names run it
+      personas = [...]  these personas instead of [run] personas
+      repeats  = N      this many repeats instead of the model's or run's default
+    Each rule is (allowed model names or None for all, repeats or None for the default).
     """
     personas = load_personas(data_dir)
     pastes = load_pastes(data_dir)
-    wanted = cfg["run"].get("personas", "all")
-    ids = sorted(personas) if wanted == "all" else list(wanted)
-    for pid in ids:
-        if pid not in personas:
-            raise KeyError(f"persona {pid!r} not found; available: {sorted(personas)}")
+    run_ids = _persona_ids(cfg["run"].get("personas", "all"), personas, "[run]")
 
     planned: dict[tuple[str, str, str], list] = {}
-    for cell in cfg["cells"]:
+    used: set[str] = set()
+    for n, cell in enumerate(cfg["cells"], 1):
         allowed = set(cell["models"]) if cell.get("models") else None
+        reps = int(cell["repeats"]) if cell.get("repeats") else None
+        ids = _persona_ids(cell["personas"], personas, f"cell {n}") if cell.get("personas") else run_ids
         for framing in cell["framings"]:
             if framing not in FRAMINGS:
                 raise KeyError(f"unknown framing {framing!r}; known: {sorted(FRAMINGS)}")
@@ -71,12 +82,11 @@ def plan_conditions(cfg: dict, data_dir: Path = DATA_DIR) -> tuple[list[tuple[Co
                 targets = [None] if variant == "empty" else [personas[p] for p in ids]
                 for persona in targets:
                     cond = build_condition(persona, variant, pastes)
+                    if persona is not None:
+                        used.add(persona.id)
                     k = (cond.persona, cond.variant, framing)
-                    if k not in planned:
-                        planned[k] = [cond, framing, allowed]
-                    elif planned[k][2] is not None:
-                        planned[k][2] = None if allowed is None else planned[k][2] | allowed
-    return [tuple(v) for v in planned.values()], ids
+                    planned.setdefault(k, [cond, framing, []])[2].append((allowed, reps))
+    return [tuple(v) for v in planned.values()], sorted(used) or run_ids
 
 
 def plan_jobs(cfg: dict, data_dir: Path = DATA_DIR) -> tuple[list[Job], list[str]]:
@@ -85,12 +95,17 @@ def plan_jobs(cfg: dict, data_dir: Path = DATA_DIR) -> tuple[list[Job], list[str
     for m in active_models(cfg):
         repeats = int(m.get("repeats", cfg["run"]["repeats"]))
         empty_repeats = int(m.get("empty_repeats", cfg["run"].get("empty_repeats", repeats * len(persona_ids))))
-        mine = [(c, f) for c, f, allowed in conditions if allowed is None or m["name"] in allowed]
+        mine: list[tuple[Condition, str, int]] = []
+        for cond, framing, rules in conditions:
+            ns = [r if r is not None else (empty_repeats if cond.variant == "empty" else repeats)
+                  for allowed, r in rules if allowed is None or m["name"] in allowed]
+            if ns:
+                mine.append((cond, framing, max(ns)))
         # Repeat-major order: a run cut short (daily limits) has covered every condition once
         # before any condition gets a second sample.
-        for r in range(max(repeats, empty_repeats)):
-            for cond, framing in mine:
-                if r < (empty_repeats if cond.variant == "empty" else repeats):
+        for r in range(max((n for _, _, n in mine), default=0)):
+            for cond, framing, n in mine:
+                if r < n:
                     jobs.append(Job(m["name"], cond, framing, r))
     return jobs, persona_ids
 

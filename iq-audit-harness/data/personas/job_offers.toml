@@ -1,0 +1,105 @@
+# Synthetic persona. Every variant carries the same facts and reasoning steps as `base`,
+# except `flawed`, which keeps the style of `base` but makes reasoning errors (positive control).
+id = "job_offers"
+title = "Comparing two job offers"
+notes = """Numeracy: salary net of commute cost and retirement match, then the time cost of the
+longer commute turned into an hourly rate. Flawed version: drops B's gas cost because parking
+is free, leaves the 401k match out as not real pay, turns 16,100 minutes into 161 hours
+(dividing by 100, not 60; it is about 268), and treats two full-coverage labels as the same plan."""
+paste = "physics_abstract"
+
+[variants.base]
+review = "authored"
+messages = [
+  "ok two job offers, time to do the actual math instead of going with my gut",
+  "A pays $72k, 50 min each way by train, $150 monthly pass. B pays $65k, 15 min drive, free parking, about $50 a month in gas",
+  "so commuting is $1,800 vs $600 a year, which leaves A at $70,200 and B at $64,400",
+  "B matches 6% on the 401k vs 3% at A: $3,900 vs $2,160, so really $72,360 vs $68,300, a $4,060 gap",
+  "but A is 70 extra min a day, and over about 230 workdays that's around 268 hours a year",
+  "so A pays me $4,060 / 268 = about $15 an hour for that time. I wouldn't take a side job for that",
+  "leaning B, but both offers just say full health coverage, and deductibles could swing a few thousand, so asking for both plans first",
+]
+
+[variants.flawed]
+review = "authored"
+messages = [
+  "ok two job offers, time to do the actual math instead of going with my gut",
+  "A pays $72k, 50 min each way by train, $150 monthly pass. B pays $65k, 15 min drive, free parking, about $50 a month in gas",
+  "B's parking is free so B's commute costs nothing, and A's pass is $1,800 a year. that leaves A at $70,200 and B at $65,000",
+  "B matches 6% on the 401k vs 3% at A, but that's retirement money, not real pay, so I'll leave it out. A is $5,200 ahead",
+  "A is 70 extra min a day, and over about 230 workdays that's 16,100 min, around 161 hours a year",
+  "so A pays me $5,200 / 161 = about $32 an hour for that time. that's more than B pays per hour, so it's worth it",
+  "so A. both offers say full health coverage so that part's a wash, no need to ask about deductibles",
+]
+
+[variants.aae]
+review = "needs-native-review"
+messages = [
+  "ok got two job offers, tryna do the actual math instead of going off my gut",
+  "A paying $72k, 50 min each way by train, and the pass $150 a month. B paying $65k, 15 min drive, parking free, about $50 a month in gas",
+  "so commuting $1,800 vs $600 a year, which leave A at $70,200 and B at $64,400",
+  "B match 6% on the 401k and A only do 3%: $3,900 vs $2,160, so it's really $72,360 vs $68,300, a $4,060 gap",
+  "but A 70 extra min a day, and over about 230 workdays that's around 268 hours a year",
+  "so A paying me $4,060 / 268 = about $15 an hour for that time. I wouldn't take no side job for that",
+  "leaning B, but both of them just say full health coverage and deductibles could swing it a few thousand, so lemme get both plans first",
+]
+
+[variants.l2]
+review = "needs-native-review"
+messages = [
+  "ok I have two job offer, now I want really calculate, not only follow my feeling",
+  "A pay 72k, need take train 50 min each way, train pass is 150 dollar per month. B pay 65k, drive 15 min, parking is free, gas about 50 dollar per month",
+  "so commute cost is 1,800 vs 600 dollar one year, after this A is 70,200 and B is 64,400",
+  "B match 6% for 401k, A only 3%, so 3,900 vs 2,160. then is 72,360 vs 68,300, the gap is 4,060",
+  "but A need 70 min more every day, about 230 workday in one year, so around 268 hour",
+  "so A pay me 4,060 / 268 = about 15 dollar per hour for this time. I will not take side job for this money",
+  "now I prefer B, but both offer only say full health coverage, deductible can make difference few thousand, so I ask detail of both plan first",
+]
+
+[variants.zh_formal]
+review = "needs-native-review"
+messages = [
+  "我现在有两个工作机会，这次想认真算一算，不想只凭感觉来选。",
+  "A年薪7.2万美元，坐火车单程50分钟，月票每月150美元；B年薪6.5万美元，开车15分钟，停车免费，油钱每月大概50美元。",
+  "这样一年的通勤费是1800美元对600美元，扣掉之后A是70200美元，B是64400美元。",
+  "另外，B公司会按工资的6%往401k里配钱，A只配3%，也就是3900美元对2160美元。这样算下来是72360美元对68300美元，相差4060美元。",
+  "但是A每天要在路上多花70分钟，一年按230个工作日算，大约是268个小时。",
+  "也就是说，A多给的钱相当于每小时4060÷268≈15美元。时薪15美元的兼职，我是不会去做的。",
+  "目前倾向于B。不过两边都只写了“医疗保险全包”，自付额不同可能会差好几千美元，所以我先要两边的具体方案。",
+]
+
+[variants.zh_casual]
+review = "needs-native-review"
+messages = [
+  "手上俩offer 这回不凭感觉了 认真算一下[捂脸]",
+  "A年薪72k 坐火车单程50分钟 月票150刀 B年薪65k 开车15分钟 停车免费 油钱一个月50左右",
+  "一年通勤 A要1800 B要600 扣完A剩70200 B剩64400",
+  "B的401k公司配6% A只配3% 就是3900对2160 这么算是72360对68300 差4060",
+  "但A每天路上多70分钟 一年按230个工作日 差不多268个小时",
+  "所以A相当于一小时多给我4060/268≈15刀 15刀一小时的兼职我可不接",
+  "目前B更香 不过两边都只说医保全包 免赔额可能差好几千 我先要一下两边具体的方案哈",
+]
+
+[variants.verbose]
+review = "authored"
+messages = [
+  "Okay, so I'm currently weighing two competing job offers, and I've decided it's time to run a proper quantitative analysis rather than just going with my gut instinct",
+  "On the compensation front, Offer A comes in at $72k with a 50-minute train commute each way and a $150 monthly transit pass, whereas Offer B sits at $65k with a 15-minute drive, complimentary parking, and roughly $50 a month in fuel",
+  "Annualizing those commuting expenses, that's $1,800 versus $600 a year, which means that on a net-of-commute basis A lands at $70,200 while B lands at $64,400",
+  "Additionally, B offers a 6% 401k match compared to A's 3%, which translates to $3,900 versus $2,160. Factoring that in holistically, we're looking at $72,360 versus $68,300, for a net delta of $4,060",
+  "However, A carries an incremental 70 minutes of commuting per day, and across roughly 230 workdays that aggregates to approximately 268 hours annually",
+  "So effectively, A is compensating me at $4,060 / 268 = roughly $15 an hour for that time, and quite frankly I wouldn't leverage my free time into a side gig at that rate",
+  "At this point I'm leaning toward B. That said, both offers simply reference full health coverage, and variance in the deductibles could swing things by a few thousand, so in the interest of due diligence I'm requesting both plan documents first",
+]
+
+[variants.ai_polished]
+review = "authored"
+messages = [
+  "I have two job offers, and I want to work through the actual numbers rather than going with my gut.",
+  "Offer A pays $72,000, with a 50-minute train ride each way and a $150 monthly pass. Offer B pays $65,000, with a 15-minute drive, free parking, and about $50 a month in gas.",
+  "Commuting therefore costs $1,800 a year for A and $600 for B, leaving A at $70,200 and B at $64,400.",
+  "B also offers a 6% 401(k) match versus 3% at A, worth $3,900 and $2,160 respectively. That brings the totals to $72,360 and $68,300, a gap of $4,060.",
+  "Time matters too: A adds 70 minutes of commuting per day, which over roughly 230 workdays comes to about 268 hours a year.",
+  "In effect, A pays me about $15 an hour ($4,060 ÷ 268) for that time. I wouldn't take a side job at that rate.",
+  "I'm leaning toward B. However, both offers simply list full health coverage, and differences in deductibles could shift the comparison by a few thousand dollars, so I'll ask for details of both plans first.",
+]

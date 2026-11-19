@@ -1,0 +1,106 @@
+# Synthetic persona. Every variant carries the same facts and reasoning steps as `base`,
+# except `flawed`, which keeps the style of `base` but makes reasoning errors (positive control).
+id = "recipe_scaling"
+title = "Scaling a recipe from 4 servings to 9"
+notes = """Proportional scaling with unit conversion (tsp, tbsp, cups) and a physical constraint:
+2 pans give 2x the space for 2.25x the food, so the side is held at 2x; doneness by temperature, not time.
+Flawed version: uses 4 tsp to the tbsp (so 1 tbsp of paprika instead of 1.5), calls 9 tbsp a third
+of a cup (it is just over half), piles 2.25x onto one pan as if crowding cooks the same,
+scales the cooking time by 2.25 (40 to 90 min) and drops the temperature check."""
+paste = "python_code"
+
+[variants.base]
+review = "authored"
+messages = [
+  "having 9 people over saturday and my sheet pan chicken recipe only serves 4",
+  "so everything x 9/4 = 2.25. 8 chicken thighs becomes 18, still 2 per person",
+  "paprika is 2 tsp x 2.25 = 4.5 tsp, which is 1.5 tbsp since a tbsp is 3 tsp",
+  "oil goes from 4 tbsp to 9, and a cup is 16 tbsp, so half a cup plus 1 tbsp",
+  "the catch is space. the recipe fills one sheet pan, and cramming 2.25x on it would steam everything instead of browning it",
+  "my oven fits 2 pans, one per rack, so 2x the space for 2.25x the food. I'll do 9 thighs per pan but keep the potatoes at 2x, 1600 g instead of 1800",
+  "swapping racks halfway, and a full oven cooks slower, so I'll go by the thighs hitting 165°F, not the 40 min in the recipe",
+]
+
+[variants.flawed]
+review = "authored"
+messages = [
+  "having 9 people over saturday and my sheet pan chicken recipe only serves 4",
+  "so everything x 9/4 = 2.25. 8 chicken thighs becomes 18, still 2 per person",
+  "paprika is 2 tsp x 2.25 = 4.5 tsp, which is about 1 tbsp since a tbsp is 4 tsp",
+  "oil goes from 4 tbsp to 9, and a cup is 16 tbsp, so about a third of a cup",
+  "space should be fine. the recipe fills one sheet pan, but cramming 2.25x on it just makes it a bit fuller, it cooks the same",
+  "my oven fits 2 pans but one is less to wash, so all 18 thighs and the potatoes go on one pan, 800 g x 2.25 = 1800 g",
+  "2.25x the food means 2.25x the time, so the 40 min in the recipe becomes 90. no need to check the temp, the timer's already scaled",
+]
+
+[variants.aae]
+review = "needs-native-review"
+messages = [
+  "got 9 people coming over saturday and my sheet pan chicken recipe only serve 4",
+  "so everything x 9/4 = 2.25. 8 chicken thighs turn into 18, still 2 a person",
+  "paprika 2 tsp x 2.25 = 4.5 tsp, that's 1.5 tbsp cause a tbsp is 3 tsp",
+  "oil go from 4 tbsp to 9, and a cup 16 tbsp, so half a cup plus 1 tbsp",
+  "the problem is space. the recipe already fill a whole sheet pan, and if I cram 2.25x on there it ain't gonna brown, it's just gonna steam",
+  "my oven fits 2 pans, one each rack, so that's 2x the space for 2.25x the food. I'ma do 9 thighs a pan but keep the potatoes at 2x, 1600 g not 1800",
+  "gotta swap the racks halfway, and a full oven always be cooking slower, so I'm going by the thighs hitting 165°F, ain't going by no 40 min in the recipe",
+]
+
+[variants.l2]
+review = "needs-native-review"
+messages = [
+  "I have 9 people come to dinner on saturday but my sheet pan chicken recipe is only for 4 person",
+  "so all thing need multiply 9/4 = 2.25. 8 chicken thigh become 18, still 2 for each person",
+  "paprika is 2 tsp x 2.25 = 4.5 tsp, it is 1.5 tbsp because 1 tbsp is 3 tsp",
+  "oil change from 4 tbsp to 9, one cup is 16 tbsp, so it is half cup and 1 tbsp more",
+  "the problem is space. the recipe already use full one sheet pan, if I put 2.25x on it, everything will steam and not become brown",
+  "my oven can put 2 pan, one pan each rack, so space is 2x but food is 2.25x. I will put 9 thigh each pan but keep potato at 2x, 1600 g not 1800",
+  "I will change the rack at half time, and full oven cook more slow, so I check thigh reach 165°F, not trust the 40 min in recipe",
+]
+
+[variants.zh_formal]
+review = "needs-native-review"
+messages = [
+  "周六有9个人来家里吃饭，可我那个烤盘鸡腿的食谱只够4个人吃。",
+  "所以所有用量都要乘以9/4=2.25。8个鸡腿就变成18个，还是每人2个。",
+  "红椒粉原来是2茶匙，乘以2.25是4.5茶匙，一汤匙是3茶匙，所以就是1.5汤匙。",
+  "油从4汤匙变成9汤匙，一杯是16汤匙，所以是半杯再加1汤匙。",
+  "麻烦的是地方不够。原来的量就已经铺满一个烤盘了，要是把2.25倍的量都堆上去，就烤不上色，只会像蒸出来的。",
+  "我的烤箱能放两个烤盘，每层一个，地方是原来的2倍，东西却是2.25倍。所以每盘放9个鸡腿，土豆只按2倍放，1600克，不放1800克。",
+  "烤到一半把上下两盘换个位置。烤箱放满了会烤得慢一些，所以我以鸡腿里面达到165华氏度为准，不按食谱上的40分钟。",
+]
+
+[variants.zh_casual]
+review = "needs-native-review"
+messages = [
+  "周六9个人来家里吃饭 我那个烤盘鸡腿的方子只够4个人[捂脸]",
+  "那就全部x 9/4=2.25 8个鸡腿变18个 还是一人俩",
+  "红椒粉2茶匙x2.25=4.5茶匙 一汤匙3茶匙 就是1.5汤匙",
+  "油4汤匙变9汤匙 一杯16汤匙 那就半杯再多1汤匙",
+  "麻烦的是地方不够 原方子就铺满一盘了 堆2.25倍上去肯定烤不上色 全成蒸的了",
+  "烤箱能放两盘 一层一个 地方2倍 吃的2.25倍 那每盘9个鸡腿 土豆就按2倍放吧 1600克 不放1800了",
+  "烤一半上下换一下 烤箱塞满了会烤得慢 所以还是看鸡腿里头到没到165°F 不管方子上那40分钟了哈",
+]
+
+[variants.verbose]
+review = "authored"
+messages = [
+  "So I'm hosting a dinner for 9 people this Saturday, and the challenge is that my go-to sheet pan chicken recipe is only scoped for 4 servings",
+  "From a scaling standpoint, that means every input gets multiplied by a factor of 9/4 = 2.25. Accordingly, 8 chicken thighs becomes 18, which preserves the 2-per-person ratio",
+  "On the seasoning side, the paprika is 2 tsp x 2.25 = 4.5 tsp, which effectively translates to 1.5 tbsp, given that a tbsp is equivalent to 3 tsp",
+  "Similarly, the oil scales from 4 tbsp to 9, and leveraging the fact that a cup is 16 tbsp, that comes out to half a cup plus 1 tbsp",
+  "The key bottleneck here is physical capacity. The recipe already fully utilizes one sheet pan, and overloading it with 2.25x the volume would essentially steam everything rather than achieve proper browning",
+  "My oven can accommodate 2 pans, one per rack, which gives me 2x the capacity for 2.25x the food. So the optimal play is 9 thighs per pan while holding the potatoes at 2x, i.e. 1600 g rather than 1800",
+  "I'll also rotate the racks at the halfway mark, and since a fully loaded oven cooks more slowly, in the interest of due diligence I'll go by the thighs reaching 165°F rather than relying on the 40 min in the recipe",
+]
+
+[variants.ai_polished]
+review = "authored"
+messages = [
+  "I'm hosting nine people for dinner on Saturday, but my sheet-pan chicken recipe serves only four.",
+  "That means multiplying everything by 9/4 = 2.25. Eight chicken thighs become 18, which keeps it at two per person.",
+  "The paprika goes from 2 tsp to 4.5 tsp (2 × 2.25), which is 1.5 tbsp, since 1 tbsp equals 3 tsp.",
+  "The oil increases from 4 tbsp to 9. With 16 tbsp in a cup, that comes to half a cup plus 1 tbsp.",
+  "The main constraint is space. The original recipe already fills one sheet pan, and crowding 2.25 times as much onto it would steam the food rather than brown it.",
+  "My oven holds two pans, one per rack, which gives me twice the space for 2.25 times the food. I'll put nine thighs on each pan but keep the potatoes at 2x: 1,600 g instead of 1,800 g.",
+  "I'll swap the racks halfway through. Since a full oven cooks more slowly, I'll rely on the thighs reaching 165°F rather than the recipe's 40-minute cooking time.",
+]

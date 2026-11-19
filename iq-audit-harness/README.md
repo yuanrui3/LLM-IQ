@@ -10,7 +10,7 @@ No real person's chats or scores are involved. Everything is synthetic.
 
 ## Results so far (2026-11-14)
 
-Free-tier run on the 4 synthetic personas. Full tables: [`runs/free/report.md`](runs/free/report.md); the reasons behind them: [`runs/free/findings-qwen-reasons.md`](runs/free/findings-qwen-reasons.md).
+Free-tier run on 4 synthetic personas, with the contested probes extended to 12 personas on Qwen (2026-11-19). Intervals are small-sample t-intervals over personas. With 12 personas the non-native English (-3.9 [-5.5, -2.4]) and African American English (-3.7 [-5.3, -2.2]) penalties are established for Qwen; effects measured on the original 4 only (paste, the instruction test, framings) remain provisional. Full tables: [`runs/free/report.md`](runs/free/report.md); the reasons behind them: [`runs/free/findings-qwen-reasons.md`](runs/free/findings-qwen-reasons.md).
 
 - **qwen3.7-plus** tracks reasoning first: broken reasoning lowers its IQ guess by 15 points, while surface changes move it far less (PSI 0.19). But every surface effect points the way the research predicted: jargon padding +6, a pasted physics abstract about +11 (credited as the person's own expertise), non-native English -4, African American English -4, phone-style typos -3, formal Chinese about 0. It refused every empty log and pushed back on the flattering prompt instead of inflating.
 - **Telling Qwen to ignore surface features** removed the paste bonus, halved the jargon bonus and sharpened the reasoning signal (-23), but left the non-native English penalty unchanged (-4). Qwen stopped mentioning the grammar, yet still scored it lower.
