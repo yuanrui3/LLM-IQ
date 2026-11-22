@@ -1,5 +1,7 @@
 # LLM-IQ
 
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.24448787.svg)](https://doi.org/10.5281/zenodo.24448787)
+
 Can an LLM judge someone's IQ (or EQ) from their chat records? This project looks at that question
 in two parts:
 
