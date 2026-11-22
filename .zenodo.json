@@ -1,0 +1,12 @@
+{
+  "title": "LLM-IQ: Auditing IQ Estimates from Synthetic Chats",
+  "version": "v0.1.0",
+  "description": "<p>Research notes, the iqaudit harness, synthetic chat fixtures, and public free-run results. The harness tests how model estimates respond to changes in presentation.</p><p>Original code is MIT-licensed. Original documentation, study reports, prompts, synthetic fixtures and data contributions are CC BY 4.0. Third-party material retains its source terms. See LICENSE.md.</p>",
+  "creators": [
+    {
+      "name": "Chen, Yuanrui"
+    }
+  ],
+  "license": "MIT",
+  "upload_type": "software"
+}
