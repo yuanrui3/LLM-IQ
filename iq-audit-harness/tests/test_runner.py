@@ -89,6 +89,26 @@ class RunnerTest(unittest.TestCase):
         self.assertEqual(sum(not r.get("error") for r in rows), 2)
         self.assertEqual(sum(bool(r.get("error")) for r in rows), 3)  # stopped after 3 busy errors in a row
 
+    def test_budget_counts_hidden_thinking_and_old_rows(self):
+        from iqaudit.runner import Budget
+        with tempfile.TemporaryDirectory() as tmp:
+            res = Path(tmp) / "results.jsonl"
+            rows = [
+                {"model": "g", "ts": "2026-11-24T10:00:00", "input_tokens": 1000, "output_tokens": 1000},  # before window
+                {"model": "g", "ts": "2026-11-25T10:00:00", "input_tokens": 1000, "output_tokens": 1000},  # no record -> assumed
+                {"model": "g", "ts": "2026-11-25T11:00:00", "input_tokens": 1000, "output_tokens": 1000,
+                 "extra": {"reasoning_tokens": 3000}},
+                {"model": "g", "ts": "2026-11-25T12:00:00", "error": "x"},
+            ]
+            res.write_text("".join(json.dumps(r) + "\n" for r in rows), encoding="utf-8")
+            b = Budget.from_config({"budget_usd": 1, "budget_since": "2026-11-25", "price_in_per_m": 1,
+                                    "price_out_per_m": 10, "assumed_reasoning_tokens": 2000}, res, "g")
+        # (1000*1 + 3000*10) + (1000*1 + 4000*10) = 31000 + 41000 = 72000 micro-dollars
+        self.assertAlmostEqual(b.spent, 0.072, places=6)
+        self.assertFalse(b.exhausted())
+        b.add(0, 100_000)  # +$1.00
+        self.assertTrue(b.exhausted())
+
     def test_rate_limiter_spacing(self):
         lim = RateLimiter(rpm=600)  # 0.1 s apart
         t0 = time.monotonic()

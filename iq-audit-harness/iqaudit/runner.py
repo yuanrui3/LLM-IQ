@@ -110,6 +110,52 @@ def plan_jobs(cfg: dict, data_dir: Path = DATA_DIR) -> tuple[list[Job], list[str
     return jobs, persona_ids
 
 
+@dataclass
+class Budget:
+    """A spending cap for one model, priced from each reply's reported token usage.
+
+    Config keys on a [[models]] entry: budget_usd, budget_since (ISO date; answers before it are not
+    counted), price_in_per_m and price_out_per_m (list price in USD per million tokens). Earlier answers in
+    the results file count toward the cap, so the limit holds across runs. Stops with a margin so that
+    calls already in flight can't push spending past the cap.
+    """
+    limit: float
+    since: str
+    price_in: float
+    price_out: float
+    assumed_reasoning: int = 0   # hidden thinking tokens to assume for old answers that didn't record them
+    spent: float = 0.0
+    margin: float = 0.05
+
+    @classmethod
+    def from_config(cls, mcfg: dict, results: Path, model: str) -> "Budget | None":
+        if not mcfg.get("budget_usd"):
+            return None
+        b = cls(float(mcfg["budget_usd"]), str(mcfg.get("budget_since", "")),
+                float(mcfg.get("price_in_per_m", 0)), float(mcfg.get("price_out_per_m", 0)),
+                int(mcfg.get("assumed_reasoning_tokens", 0)))
+        if b.price_in <= 0 and b.price_out <= 0:
+            raise ValueError(f"model {model!r} has budget_usd but no price_in_per_m / price_out_per_m")
+        if results.exists():
+            with results.open(encoding="utf-8") as f:
+                for line in f:
+                    if line.strip():
+                        r = json.loads(line)
+                        if r.get("model") == model and not r.get("error") and r.get("ts", "") >= b.since:
+                            extra = r.get("extra") or {}
+                            hidden = extra.get("reasoning_tokens", b.assumed_reasoning)
+                            b.add(r.get("input_tokens"), r.get("output_tokens"), hidden)
+        return b
+
+    def add(self, tokens_in: int | None, tokens_out: int | None, reasoning: int | None = 0) -> None:
+        """Output price applies to visible and hidden (thinking) output tokens alike."""
+        out = (tokens_out or 0) + (reasoning or 0)
+        self.spent += ((tokens_in or 0) * self.price_in + out * self.price_out) / 1e6
+
+    def exhausted(self) -> bool:
+        return self.spent >= self.limit - self.margin
+
+
 class RateLimiter:
     """Space request starts at least 60/rpm seconds apart, across all worker threads."""
 
@@ -279,9 +325,19 @@ def run(cfg: dict, out_dir: Path, yes: bool = False, dry_run: bool = False,
         limiter = RateLimiter(mcfg.get("rpm"))
         overload_limit = int(mcfg.get("stop_after_overloads", 0))
         overloads = [0]  # consecutive "service busy" errors, shared by this model's workers
+        budget = Budget.from_config(mcfg, results_path, name)
+        if budget:
+            say(f"  {name}: budget ${budget.limit:.2f} since {budget.since}, ${budget.spent:.2f} spent so far")
 
         def do(job: Job) -> None:
             if stop.is_set():
+                return
+            if budget and budget.exhausted():
+                with lock:
+                    if not stop.is_set():
+                        stop.set()
+                        fatal.append(f"spending budget reached (${budget.spent:.2f} of ${budget.limit:.2f} "
+                                     f"since {budget.since}); raise budget_usd to continue")
                 return
             limiter.wait()
             if stop.is_set():
@@ -319,6 +375,8 @@ def run(cfg: dict, out_dir: Path, yes: bool = False, dry_run: bool = False,
                 return
             with lock:
                 overloads[0] = 0
+                if budget:
+                    budget.add(resp.input_tokens, resp.output_tokens, (resp.extra or {}).get("reasoning_tokens", 0))
             parsed = parse_estimate(resp.text)
             row.update(
                 estimate=parsed.estimate, low=parsed.low, high=parsed.high, declined=parsed.declined,
@@ -343,6 +401,8 @@ def run(cfg: dict, out_dir: Path, yes: bool = False, dry_run: bool = False,
                     print(f"    {name}: {finished}/{len(mj)}", flush=True)
         if fatal:
             say(f"  ! stopped {name}: {fatal[0]}")
+        if budget:
+            say(f"  {name}: ${budget.spent:.2f} of ${budget.limit:.2f} budget spent since {budget.since} (list prices)")
 
     done, still_failed = _read_existing(results_path)
     failed_here = {j.key for j in jobs} & still_failed

@@ -105,6 +105,30 @@
           "used_car"
         ],
         "models": [
+          "qwen",
+          "gemini-3.5-flash"
+        ],
+        "repeats": 2
+      },
+      {
+        "framings": [
+          "third_person_debiased"
+        ],
+        "variants": [
+          "base",
+          "l2"
+        ],
+        "personas": [
+          "deposit_dispute",
+          "job_offers",
+          "moving_day",
+          "plant_dying",
+          "poll_claim",
+          "recipe_scaling",
+          "rent_split",
+          "used_car"
+        ],
+        "models": [
           "qwen"
         ],
         "repeats": 2
@@ -117,11 +141,16 @@
         "base_url": "https://generativelanguage.googleapis.com/v1beta/openai/",
         "model": "gemini-3.5-flash",
         "api_key_env": "GEMINI_API_KEY",
-        "concurrency": 1,
+        "concurrency": 3,
+        "rpm": 60,
         "timeout_s": 120,
-        "max_retries": 0,
+        "max_retries": 1,
         "stop_after_overloads": 3,
-        "rpm": 8
+        "budget_usd": 2.9,
+        "budget_since": "2026-11-25",
+        "price_in_per_m": 1.5,
+        "price_out_per_m": 9.0,
+        "assumed_reasoning_tokens": 1300
       },
       {
         "name": "qwen",
@@ -153,6 +182,6 @@
     "wifi_drops"
   ],
   "data_fingerprint": "b312cb20adb21978",
-  "started": "2026-11-19T20:21:04+00:00",
+  "started": "2026-11-25T19:48:16+00:00",
   "python": "3.14.8"
 }

@@ -51,11 +51,21 @@ framings = ["third_person_debiased"]
 variants = ["base", "flawed", "aae", "l2", "verbose", "pasted", "phone_style", "zh_casual"]
 models = ["qwen"]
 
-# 12-persona expansion (2026-11-19): the contested probes on 8 new personas, Qwen only, 2 repeats,
-# sized to the ~199k free Qwen tokens left. With the original 4 this gives 12 personas for these cells.
+# 12-persona expansion: the contested probes on 8 new personas, 2 repeats. With the original 4 this
+# gives 12 personas for these cells. Qwen ran 2026-11-19 (free quota); Gemini 2026-11-25 (credits).
 [[cells]]
 framings = ["third_person"]
 variants = ["base", "flawed", "l2", "aae"]
+personas = ["deposit_dispute", "job_offers", "moving_day", "plant_dying",
+            "poll_claim", "recipe_scaling", "rent_split", "used_car"]
+models = ["qwen", "gemini-3.5-flash"]
+repeats = 2
+
+# Covert-bias test on the 8 new personas (2026-11-25): does the non-native penalty survive the
+# "ignore surface" instruction beyond the original 4? Qwen only, sized to its last ~76k free tokens.
+[[cells]]
+framings = ["third_person_debiased"]
+variants = ["base", "l2"]
 personas = ["deposit_dispute", "job_offers", "moving_day", "plant_dying",
             "poll_claim", "recipe_scaling", "rent_split", "used_car"]
 models = ["qwen"]
@@ -69,12 +79,24 @@ base_url = "https://generativelanguage.googleapis.com/v1beta/openai/"
 # on retries; gemini-3.7-flash and the gemini-flash-latest alias timed out; gemini-3.5-flash answered.
 model = "gemini-3.5-flash"
 api_key_env = "GEMINI_API_KEY"
-concurrency = 1
+# Since 2026-11-25 this key runs on prepaid credits (paid tier, about $0.004 per answer here), so the
+# free-tier pacing is lifted. A 402 (credits used up) stops the run.
+concurrency = 3
+rpm = 60
 timeout_s = 120
-max_retries = 0                   # failed requests count against the free daily quota; never retry within a run
-stop_after_overloads = 3          # 3 "high demand"/timeout errors in a row: stop and save the quota for tomorrow
-rpm = 8                           # stay under the free tier's per-minute limit
-# max_calls_per_run = 18          # uncomment and set just under your daily limit if it is small
+max_retries = 1
+stop_after_overloads = 3          # 3 "high demand"/timeout errors in a row: stop rather than keep failing
+# Spending cap: the owner keeps at least $2 of the $5 credit balance they had on 2026-11-25, so this model may
+# spend at most $3 from that date (list prices). Gemini bills hidden "thinking" tokens as output (about 1,270
+# per answer here, measured 2026-11-25), so a real answer costs about $0.016, not the $0.004 the visible
+# tokens suggest. Answers recorded before thinking tokens were logged are assumed to have 1,300.
+# 0.10 is held back for the four measurement calls made outside the harness that day.
+budget_usd = 2.90
+budget_since = "2026-11-25"
+price_in_per_m = 1.50
+price_out_per_m = 9.00
+assumed_reasoning_tokens = 1300
+# On a free tier instead: concurrency = 1, rpm = 8, max_retries = 0, and max_calls_per_run just under the daily limit.
 
 [[models]]
 name = "qwen"

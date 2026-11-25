@@ -6,8 +6,12 @@
 > non-native English **-3.9 [-5.5, -2.4]** (original 4: -3.8, new 8: -4.0; negative in 10 of 12),
 > African American English **-3.7 [-5.3, -2.2]** (original 4: -3.8, new 8: -3.7; negative in 12 of 12),
 > broken reasoning -14.7 [-20.4, -8.9]. Both penalties are now established for this model on these texts.
-> Still open: the covert part (the penalty surviving the ignore-surface instruction) rests on the original
-> 4 personas only, and the new personas' guise texts are LLM-written and unreviewed.
+>
+> **Update (2026-11-25): the covert finding at 12 personas.** Under the ignore-surface instruction the
+> non-native penalty is still **-3.2 [-4.7, -1.6]** (original 4: -4.3, new 8: -2.6; negative in 9 of 12).
+> The instruction changed it by only +0.8 [-0.5, +2.1], not significant. Meanwhile the share of non-native
+> explanations that mention language form fell from 93% (26/28) to 4% (1/28). The model stops saying
+> it but keeps doing it. Caveat: the new personas' guise texts are LLM-written and unreviewed.
 
 > **Correction (2026-11-18).** The intervals quoted below come from the harness bootstrap, which is too narrow with
 > only 4 personas. Under a small-sample t-interval, the non-native English shift (per persona +1.3, -5.7, -5.7, -5.3)

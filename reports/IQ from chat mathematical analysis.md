@@ -169,7 +169,13 @@ A mediation reading explains the pattern. Split the rater into what it conscious
 - **Weighed cues.** Paste and vocabulary enter through w·c(T), cues the model names and counts. An instruction about what to weigh can set w to about 0, and it did.
 - **Perceived reasoning.** Non-native grammar seems to lower q̂, the model's own perception of how clear and rigorous the reasoning is. That effect travels through the legitimate mediator. "Don't let grammar affect your score" cannot remove it, because the model no longer thinks grammar is affecting the score; it thinks the reasoning is weaker. Hence the silence in the explanations alongside an unchanged number. This is the covert-bias pattern.
 
-This reading is a hypothesis. With 12 personas the penalty itself is now established (§3). Its survival under the instruction, though, has only been tested on the original 4.
+**Update, 12 personas (2026-11-25).** The covert pattern now holds across all 12 personas:
+
+- Under the instruction, the non-native penalty is **−3.2 [−4.7, −1.6]**, against −3.9 without it.
+- The instruction's effect on the penalty is +0.8 [−0.5, +2.1], indistinguishable from zero.
+- Non-native explanations mentioning language fell from **93% to 4%**.
+
+The mediation reading is now the best-supported explanation, but it is still not proven. Canonicalize-then-score is the test that would confirm it.
 
 **A testable fix: canonicalize, then score.** If the bias runs through how the form is perceived, remove the form before scoring:
 
